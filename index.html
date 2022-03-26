@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+  
+<script type="module">
+  const videoElement = document.getElementsByClassName('input_video')[0];
+  const canvasElement = document.getElementsByClassName('output_canvas')[0];
+  const ctx = canvasElement.getContext('2d');
+
+  const faceImage = new Image();
+  faceImage.src = "./face.png";
+
+  const bodyImage = new Image();
+  bodyImage.src = "./body.png";
+
+  const hairImage = new Image();
+  hairImage.src = "./hair.png";
+
+
+  const partsImage = new Image();
+  partsImage.src = "./parts.png";
+
+  let myLandmarks = [0, 1, 6, 17, 55, 52, 70, 61, 291, 285, 282, 276, 160, 158, 144, 153, 385, 387, 380, 373, 10, 152, 454, 234];
+  let lastLandmarks = [];
+
+  function onResults(results) {
+
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;
+    //ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    ctx.rect(0, 0, canvasElement.width, canvasElement.height);
+    ctx.fillStyle = "#26282B";
+    ctx.fill();
+    ctx.translate(canvasElement.width, 1);
+
+    ctx.scale(-1, 1);
+    //ctx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+    let centerX = canvasElement.width / 2;
+    let centerY = canvasElement.height / 2;
+    
+    let landmarks = results.multiFaceLandmarks.length > 0 ? results.multiFaceLandmarks[0] : [];
+
+    // Guardarse el frame anterior para que en caso de qyue desaparezca el landmark reutilizarlo?
+    // TODO: Crear funcion getLandmark(landmark)
+    if(landmarks.length == 0 && lastLandmarks.length > 0){
+      landmarks = lastLandmarks;
+    }else if(landmarks.length == 0 && lastLandmarks.length == 0){
+      ctx.restore();
+      return;
+    }
+    
+    let top = landmarks[10];
+    let bottom = landmarks[152]; 
+    let left = landmarks[454];
+    let right = landmarks[234];
+
+    let angle = Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180); // TODO: ángulo entre el punto superior(10) e inferior(152) para saber la rotación
+    let width = 64;//distance(left, right); // TODO: distancia entre el punto izquierdo(454) y derecho(234) para saber el ancho
+    let height = 64;//distance(top, bottom); // TODO: distancia entre el punto superior(10) e inferior(152) para saber el alto
+    
+    let x = - width / 2;
+    let y = - height / 2 - 20;
+
+    
+    ctx.save();
+    ctx.translate(centerX , centerY);
+    ctx.scale(3, 3);
+
+    ctx.drawImage(bodyImage, x - 7, y + 56);
+
+    ctx.restore();
+    
+    ctx.save()
+    ctx.translate(centerX , centerY);
+    ctx.rotate(angle);
+    ctx.scale(3, 3);
+
+    //ctx.rotate(10)
+    
+
+    ctx.drawImage(faceImage, x, y);
+
+    let leftEyeTop = landmarks[387];
+    let leftEyeBottom = landmarks[373];
+
+    let rightEyeTop = landmarks[160];
+    let rightEyeBottom = landmarks[144];
+
+    let faceHeight = distance(top, bottom);
+    let leftEyeDistance = distance(leftEyeTop, leftEyeBottom);
+    let rightEyeDistance = distance(rightEyeTop, rightEyeBottom);
+
+    //console.log("faceHeight", faceHeight);
+    console.log("leftEyeDistance", leftEyeDistance);
+    console.log("leftEyeDistance", leftEyeDistance);
+
+    // Distancia entre punto superior e inferior para tomar como referencia de tamaño
+    // Distancia entre parpado superior e inferior, si es más pequeño que threshold está cerrado
+    
+    let leftEyeClosed = leftEyeDistance < 0.01;
+    let rightEyeClosed = rightEyeDistance < 0.01;
+
+    // right eyebrow
+    drawSpriteSheet(ctx, partsImage, x + 12, y + 16, 0, 0, false, 0);
+    // right eye opened
+    if(!rightEyeClosed) drawSpriteSheet(ctx, partsImage, x + 12, y + 23, 1, 0, false, 0);
+    // right eye closed
+    if(rightEyeClosed) drawSpriteSheet(ctx, partsImage, x + 12, y + 23, 0, 1, false, 0);
+
+    // left eyebrow
+    drawSpriteSheet(ctx, partsImage, x + 52, y + 16, 0, 0, true, 0);
+    // left eye opened
+    if(!leftEyeClosed) drawSpriteSheet(ctx, partsImage, x + 52, y + 23, 1, 0, true, 0);
+    // left eye closed
+    if(leftEyeClosed) drawSpriteSheet(ctx, partsImage, x + 52, y + 23, 0, 1, true, 0);
+
+    // nose
+    drawSpriteSheet(ctx, partsImage, x + 24, y + 34, 2, 0, false, 0);
+    // mouth
+    drawSpriteSheet(ctx, partsImage, x + 24, y + 44, 3, 0, false, 0);
+
+    ctx.drawImage(hairImage, x, y - 20);
+
+    ctx.restore();
+
+    // myLandmarks.forEach((i)=>{
+    //   let landmark = landmarks[i];
+    //   if(landmark){
+    //     fillCircle(ctx, landmark.x * canvasElement.width, landmark.y * canvasElement.height, 2, "#FF0000");
+    //   }
+    // });
+
+    lastLandmarks = landmarks;
+
+    ctx.restore();
+    
+  }
+
+  function distance(a, b){
+    let xs = b.x - a.x;
+		let ys = b.y - a.y;		
+	
+    xs *= xs;
+    ys *= ys;
+	 
+	  return Math.sqrt( xs + ys );
+  }
+
+  function fillCircle(ctx, x, y, r, color){
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+
+  function drawSpriteSheet(ctx, img, x, y, tX, tY, flip, angle){
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    if(flip) ctx.scale(-1, 1);
+    ctx.drawImage(img, tX * 16, tY * 16, 16, 16, 0, 0, 16, 16);
+    ctx.restore();
+  }
+  
+  const faceMesh = new FaceMesh({locateFile: (file) => {
+    return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+  }});
+
+  faceMesh.setOptions({
+    maxNumFaces: 1,
+    refineLandmarks: true,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
+  });
+
+  faceMesh.onResults(onResults);
+  
+  const camera = new Camera(videoElement, {
+    onFrame: async () => {
+      await faceMesh.send({image: videoElement});
+    },
+    width: 640,
+    height: 480
+  });
+  camera.start();
+  </script>
+</head>
+
+<body>
+  <div style="display: flex; align-items: start;">
+    <canvas class="output_canvas" width="640px" height="480px"></canvas>
+    <video class="input_video" style="width: 250px; transform: scale(-1, 1);"></video>
+  </div>
+</body>
+</html>
