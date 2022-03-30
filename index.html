@@ -8,9 +8,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
   
 <script type="module">
-  const videoElement = document.getElementsByClassName('input_video')[0];
-  const canvasElement = document.getElementsByClassName('output_canvas')[0];
-  const ctx = canvasElement.getContext('2d');
+  const videoElement = document.querySelector("#video");
+  const avatarCanvas = document.querySelector("#avatarCanvas");
+  const videoCanvas = document.querySelector("#videoCanvas");
+  const ctx = avatarCanvas.getContext('2d');
 
   const faceImage = new Image();
   faceImage.src = "./face.png";
@@ -32,17 +33,17 @@
 
     ctx.save();
     ctx.imageSmoothingEnabled = false;
-    //ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    ctx.rect(0, 0, canvasElement.width, canvasElement.height);
+    //ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
+    ctx.rect(0, 0, avatarCanvas.width, avatarCanvas.height);
     ctx.fillStyle = "#26282B";
     ctx.fill();
-    ctx.translate(canvasElement.width, 1);
+    ctx.translate(avatarCanvas.width, 1);
 
     ctx.scale(-1, 1);
-    //ctx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+    //ctx.drawImage(results.image, 0, 0, avatarCanvas.width, avatarCanvas.height);
 
-    let centerX = canvasElement.width / 2;
-    let centerY = canvasElement.height / 2;
+    let centerX = avatarCanvas.width / 2;
+    let centerY = avatarCanvas.height / 2;
     
     let landmarks = results.multiFaceLandmarks.length > 0 ? results.multiFaceLandmarks[0] : [];
 
@@ -54,6 +55,11 @@
       ctx.restore();
       return;
     }
+
+    drawVideoCanvas(videoCanvas, results.image, landmarks);
+
+
+    
     
     let top = landmarks[10];
     let bottom = landmarks[152]; 
@@ -97,8 +103,8 @@
     let rightEyeDistance = distance(rightEyeTop, rightEyeBottom);
 
     //console.log("faceHeight", faceHeight);
-    console.log("leftEyeDistance", leftEyeDistance);
-    console.log("leftEyeDistance", leftEyeDistance);
+    // console.log("leftEyeDistance", leftEyeDistance);
+    // console.log("leftEyeDistance", leftEyeDistance);
 
     // Distancia entre punto superior e inferior para tomar como referencia de tamaño
     // Distancia entre parpado superior e inferior, si es más pequeño que threshold está cerrado
@@ -129,17 +135,25 @@
 
     ctx.restore();
 
-    // myLandmarks.forEach((i)=>{
-    //   let landmark = landmarks[i];
-    //   if(landmark){
-    //     fillCircle(ctx, landmark.x * canvasElement.width, landmark.y * canvasElement.height, 2, "#FF0000");
-    //   }
-    // });
+   
 
     lastLandmarks = landmarks;
 
     ctx.restore();
     
+  }
+
+  function drawVideoCanvas(videoCanvas, image, landmarks){
+    let ctx = videoCanvas.getContext("2d");
+
+    ctx.drawImage(image, 0, 0, videoCanvas.width, videoCanvas.height);
+
+    myLandmarks.forEach((i)=>{
+      let landmark = landmarks[i];
+      if(landmark){
+        fillCircle(ctx, landmark.x * videoCanvas.width, landmark.y * videoCanvas.height, 2, "#FF0000");
+      }
+    });
   }
 
   function distance(a, b){
@@ -194,8 +208,9 @@
 
 <body>
   <div style="display: flex; align-items: start;">
-    <canvas class="output_canvas" width="640px" height="480px"></canvas>
-    <video class="input_video" style="width: 250px; transform: scale(-1, 1);"></video>
+    <canvas id="avatarCanvas" width="400px" height="400px"></canvas>
+    <canvas id="videoCanvas" width="320px" height="240px" style="transform: scale(-1, 1);"></canvas>
+    <video id="video" style="display:none; width: 250px; transform: scale(-1, 1);"></video>
   </div>
 </body>
 </html>
