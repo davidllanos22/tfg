@@ -1,4 +1,5 @@
 export type AvatarPart = {id: string, color: string};
+export const AvatarLandmarks = [0, 1, 6, 17, 55, 52, 70, 61, 291, 285, 282, 276, 160, 158, 144, 153, 385, 387, 380, 373, 10, 152, 454, 234];
 
 export class Avatar{
   private _name: string;
