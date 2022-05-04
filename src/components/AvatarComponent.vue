@@ -24,7 +24,9 @@ onUnmounted(() => {
 });
 
 function draw(){
-  let cvs = document.querySelector(".cvs");
+  let cvs = document.querySelector(".cvs-" + props.avatar.name);
+  cvs.style.width = "200px";
+  cvs.style.height = "200px";
 
   if(!cvs) return;
   
@@ -142,7 +144,6 @@ function getLandmark(index){
 <template>
   <span>{{avatar.name}}</span>
   <br>
-  <canvas class="cvs" width="400" height="400"></canvas>
+  <canvas :class="'cvs-' + avatar.name" width="400" height="400"></canvas>
   <br>
-  <!-- <span>{{landmarks}}</span> -->
 </template>
