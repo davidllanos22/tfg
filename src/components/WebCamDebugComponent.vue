@@ -35,5 +35,4 @@ function draw(){
   <br>
   <canvas class="videocvs" width="400" height="400" style="transform: scale(-1, 1);"></canvas>
   <br>
-  <!-- <span>{{landmarks}}</span> -->
 </template>

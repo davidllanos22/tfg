@@ -13,8 +13,8 @@ let lastLandmarks = [];
 
 function onResults(results){
   webcamImage.value = results.image;
-  landmarks.value = results.multiFaceLandmarks.length > 0 ? results.multiFaceLandmarks[0] : [];
-  
+  landmarks.value = getLandmarksFormatted(results.multiFaceLandmarks);
+
   if(landmarks.value.length == 0 && lastLandmarks.length > 0){
     landmarks.value = lastLandmarks;
   }else if(landmarks.length == 0 && lastLandmarks.length == 0){
@@ -22,10 +22,18 @@ function onResults(results){
   }
 
   lastLandmarks = landmarks.value;
+}
 
-  // landmarks.value = landmarks.value.filter((landmark, index)=>{
-  //   return AvatarLandmarks.includes(index);
-  // });
+function getLandmarksFormatted(multiFaceLandmarks){
+  let landmarks = multiFaceLandmarks.length > 0 ? multiFaceLandmarks[0] : [];
+  let result = {};
+
+  AvatarLandmarks.forEach((n)=>{
+    console.log(n); 
+    result[n] = landmarks[n];
+  });
+
+  return result;
 }
 
 onMounted(() => {
