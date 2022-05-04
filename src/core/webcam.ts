@@ -6,12 +6,14 @@ export class Webcam{
   
   landmarks = {};
   lastLandmarks = {};
+  camera: any;
+  videoElement: HTMLElement;
 
   init(callback: any){
-    const videoElement = document.createElement("video");
-    videoElement.style.display = "none";
-    videoElement.style.width = "250px";
-    videoElement.style.transform = "scale(-1, 1)";
+    this.videoElement = document.createElement("video");
+    this.videoElement.style.display = "none";
+    this.videoElement.style.width = "250px";
+    this.videoElement.style.transform = "scale(-1, 1)";
 
     const faceMesh = new FaceMesh({locateFile: (file) => {
       return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
@@ -46,14 +48,19 @@ export class Webcam{
       callback(result);
     });
 
-    const camera = new Camera(videoElement, {
+    this.camera = new Camera(this.videoElement, {
       onFrame: async () => {
-        await faceMesh.send({image: videoElement});
+        await faceMesh.send({image: this.videoElement});
       },
       width: 640,
       height: 480
     });
-    camera.start();
+    this.camera.start();
+  }
+
+  destroy(){
+    this.camera.stop();
+    this.videoElement.remove();
   }
 
   getLandmarksFormatted(multiFaceLandmarks: any){

@@ -2,7 +2,7 @@
 import { Avatar, AvatarLandmarks } from "@/core/avatar";
 import { Drawing } from "@/core/drawing";
 import { MathUtils } from "@/core/mathUtils";
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 let props = defineProps({
   image: null,
@@ -11,10 +11,17 @@ let props = defineProps({
 
 onMounted(() => {
   draw();
-})
+});
+
+onUnmounted(() => {
+
+});
 
 function draw(){
   let cvs = document.querySelector(".videocvs");
+
+  if(!cvs) return;
+  
   let ctx = cvs.getContext('2d');
 
   if(props.image) ctx.drawImage(props.image, 0, 0, cvs.width, cvs.height);
