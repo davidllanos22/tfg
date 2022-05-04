@@ -1,7 +1,8 @@
 <script setup>
 import AvatarComponent from "@/components/AvatarComponent.vue";
 import WebCamDebugComponent from "@/components/WebCamDebugComponent.vue";
-import { Avatar, AvatarLandmarks} from "@/core/avatar";
+import { Avatar } from "@/core/avatar";
+import { Webcam } from "@/core/webcam";
 import { ref, onMounted } from 'vue'
 
 let avatar = new Avatar();
@@ -9,68 +10,21 @@ avatar.name = "David";
 
 let landmarks = ref([]);
 let webcamImage = ref(null);
-let lastLandmarks = [];
 
 function onResults(results){
   webcamImage.value = results.image;
-  landmarks.value = getLandmarksFormatted(results.multiFaceLandmarks);
-
-  let landmarksLength = Object.keys(landmarks.value).length;
-  let lastLandmarksLength = Object.keys(lastLandmarks).length;
-
-  if(landmarksLength == 0 && lastLandmarksLength > 0){
-    landmarks.value = lastLandmarks;
-  }else if(landmarksLength == 0 && lastLandmarksLength == 0){
-    return;
-  }
-
-  lastLandmarks = landmarks.value;
-}
-
-function getLandmarksFormatted(multiFaceLandmarks){
-  let landmarks = multiFaceLandmarks.length > 0 ? multiFaceLandmarks[0] : [];
-  if(landmarks.length == 0 ) return {};
-
-  let result = {};
-
-  AvatarLandmarks.forEach((n)=>{
-    result[n] = landmarks[n];
-  });
-
-  return result;
+  landmarks.value = results.landmarks;
 }
 
 onMounted(() => {
-  const videoElement = document.querySelector("#video");
-
-  const faceMesh = new FaceMesh({locateFile: (file) => {
-    return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-  }});
-
-  faceMesh.setOptions({
-    maxNumFaces: 1,
-    refineLandmarks: true,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5
-  });
-
-  faceMesh.onResults(onResults);
-
-  const camera = new Camera(videoElement, {
-    onFrame: async () => {
-      await faceMesh.send({image: videoElement});
-    },
-    width: 640,
-    height: 480
-  });
-  camera.start();
+  let webcam = new Webcam();
+  webcam.init(onResults);
 })
 
 </script>
 
 <template>
   <h1>AvatarPlay</h1>
-  <video id="video" style="display:none; width: 250px; transform: scale(-1, 1);"></video>
   <AvatarComponent :avatar="avatar" :landmarks="landmarks"/>
   <WebCamDebugComponent :image="webcamImage" :landmarks="landmarks"/>
 </template>
