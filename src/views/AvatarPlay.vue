@@ -15,9 +15,12 @@ function onResults(results){
   webcamImage.value = results.image;
   landmarks.value = getLandmarksFormatted(results.multiFaceLandmarks);
 
-  if(landmarks.value.length == 0 && lastLandmarks.length > 0){
+  let landmarksLength = Object.keys(landmarks.value).length;
+  let lastLandmarksLength = Object.keys(lastLandmarks).length;
+
+  if(landmarksLength == 0 && lastLandmarksLength > 0){
     landmarks.value = lastLandmarks;
-  }else if(landmarks.length == 0 && lastLandmarks.length == 0){
+  }else if(landmarksLength == 0 && lastLandmarksLength == 0){
     return;
   }
 
@@ -26,10 +29,11 @@ function onResults(results){
 
 function getLandmarksFormatted(multiFaceLandmarks){
   let landmarks = multiFaceLandmarks.length > 0 ? multiFaceLandmarks[0] : [];
+  if(landmarks.length == 0 ) return {};
+
   let result = {};
 
   AvatarLandmarks.forEach((n)=>{
-    console.log(n); 
     result[n] = landmarks[n];
   });
 
