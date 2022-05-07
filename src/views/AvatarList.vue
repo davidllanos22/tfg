@@ -38,7 +38,7 @@ onUnmounted(() => {
 
   <div class="w-100 d-flex flex-row flex-wrap justify-content-around">
     <div v-for="avatar in avatars" :key="avatar.name">
-      <AvatarComponent :avatar="avatar" :landmarks="landmarks"/>
+      <AvatarComponent :avatar="avatar"/>
     </div>
   </div>
 

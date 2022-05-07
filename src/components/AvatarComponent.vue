@@ -42,24 +42,23 @@ function draw(){
   ctx.scale(-1, 1);
   //ctx.drawImage(results.image, 0, 0, cvs.width, cvs.height);
 
-  if(props.landmarks.length == 0){
-    ctx.restore();
-    requestAnimationFrame(draw.bind(this));
-    return;
-  }
+  // if(props.landmarks.length == 0){
+  //   ctx.restore();
+  //   requestAnimationFrame(draw.bind(this));
+  //   return;
+  // }
 
   let centerX = cvs.width / 2;
   let centerY = cvs.height / 2;
 
   // drawVideoCanvas(videoCanvas, results.image, landmarks);
-
   
-  let top = getLandmark(10);
-  let bottom = getLandmark(152); 
-  let left = getLandmark(454);
-  let right = getLandmark(234);
+  // let top = getLandmark(10);
+  // let bottom = getLandmark(152); 
+  // let left = getLandmark(454);
+  // let right = getLandmark(234);
 
-  let angle = Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180); // TODO: ángulo entre el punto superior(10) e inferior(152) para saber la rotación
+  let angle = getHeadRotation();
   let width = 64;//distance(left, right); // TODO: distancia entre el punto izquierdo(454) y derecho(234) para saber el ancho
   let height = 64;//distance(top, bottom); // TODO: distancia entre el punto superior(10) e inferior(152) para saber el alto
   
@@ -81,29 +80,17 @@ function draw(){
   ctx.scale(3, 3);
 
   //ctx.rotate(10)
-  
 
   ctx.drawImage(faceImage, x, y);
 
-  let leftEyeTop = getLandmark(387);
-  let leftEyeBottom = getLandmark(373);
 
-  let rightEyeTop = getLandmark(160);
-  let rightEyeBottom = getLandmark(144);
-
-  let faceHeight = MathUtils.distance(top, bottom);
-  let leftEyeDistance = MathUtils.distance(leftEyeTop, leftEyeBottom);
-  let rightEyeDistance = MathUtils.distance(rightEyeTop, rightEyeBottom);
-
-  //console.log("faceHeight", faceHeight);
-  // console.log("leftEyeDistance", leftEyeDistance);
-  // console.log("leftEyeDistance", leftEyeDistance);
-
+  //let faceHeight = MathUtils.distance(top, bottom);
+  
   // Distancia entre punto superior e inferior para tomar como referencia de tamaño
   // Distancia entre parpado superior e inferior, si es más pequeño que threshold está cerrado
   
-  let leftEyeClosed = leftEyeDistance < 0.01;
-  let rightEyeClosed = rightEyeDistance < 0.01;
+  let leftEyeClosed = isLeftEyeClosed();
+  let rightEyeClosed = isRightEyeClosed();
 
   // right eyebrow
   Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16, 0, 0, false, 0);
@@ -136,7 +123,36 @@ function draw(){
 
 function getLandmark(index){
   // return props.landmarks[AvatarLandmarks.indexOf(index)]
-  return props.landmarks[index];
+  return props.landmarks ? props.landmarks[index] : null;
+}
+
+function getHeadRotation(){
+  let top = getLandmark(10);
+  let bottom = getLandmark(152);
+
+  if(top == null || bottom == null) return 0;
+
+  return Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180); // TODO: ángulo entre el punto superior(10) e inferior(152) para saber la rotación
+}
+
+function isLeftEyeClosed(){
+  let rightEyeTop = getLandmark(387);
+  let rightEyeBottom = getLandmark(373);
+
+  if(rightEyeTop == null || rightEyeBottom == null) return false;
+
+  let rightEyeDistance = MathUtils.distance(rightEyeTop, rightEyeBottom);
+  return rightEyeDistance < 0.01;
+}
+
+function isRightEyeClosed(){
+  let leftEyeTop = getLandmark(160);
+  let leftEyeBottom = getLandmark(144);
+
+  if(leftEyeTop == null || leftEyeBottom == null) return false;
+
+  let leftEyeDistance = MathUtils.distance(leftEyeTop, leftEyeBottom);
+  return leftEyeDistance < 0.01;
 }
 
 </script>
