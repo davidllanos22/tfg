@@ -2,7 +2,7 @@
 import { Avatar, AvatarLandmarks } from "@/core/avatar";
 import { Drawing } from "@/core/drawing";
 import { MathUtils } from "@/core/mathUtils";
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue';
 
 //TODO: cargar todas las imágenes
 const faceImage = Drawing.createImage("face.png");
