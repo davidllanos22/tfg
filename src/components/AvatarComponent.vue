@@ -35,23 +35,14 @@ function draw(){
   ctx.save();
   ctx.imageSmoothingEnabled = false;
 
-  Drawing.clearCanvas(ctx, cvs.width, cvs.height, "#26282B");
+  Drawing.clearCanvas(ctx, cvs.width, cvs.height, props.avatar.backgroundColor || "#26282B");
 
   ctx.translate(cvs.width, 1);
 
   ctx.scale(-1, 1);
-  //ctx.drawImage(results.image, 0, 0, cvs.width, cvs.height);
-
-  // if(props.landmarks.length == 0){
-  //   ctx.restore();
-  //   requestAnimationFrame(draw.bind(this));
-  //   return;
-  // }
 
   let centerX = cvs.width / 2;
   let centerY = cvs.height / 2;
-
-  // drawVideoCanvas(videoCanvas, results.image, landmarks);
   
   // let top = getLandmark(10);
   // let bottom = getLandmark(152); 
@@ -122,7 +113,6 @@ function draw(){
 }
 
 function getLandmark(index){
-  // return props.landmarks[AvatarLandmarks.indexOf(index)]
   return props.landmarks ? props.landmarks[index] : null;
 }
 
@@ -132,7 +122,7 @@ function getHeadRotation(){
 
   if(top == null || bottom == null) return 0;
 
-  return Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180); // TODO: ángulo entre el punto superior(10) e inferior(152) para saber la rotación
+  return Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180);
 }
 
 function isLeftEyeClosed(){

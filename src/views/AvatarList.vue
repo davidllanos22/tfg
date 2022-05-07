@@ -8,7 +8,7 @@ import { ref, onMounted, onUnmounted  } from 'vue'
 let avatars = [];
 
 for(let i = 0; i < 10; i++){
-  let avatar = new Avatar();
+  let avatar = Avatar.random();
   avatar.name = i;
   avatars.push(avatar);
 }

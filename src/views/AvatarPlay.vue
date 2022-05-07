@@ -5,7 +5,7 @@ import { Avatar } from "@/core/avatar";
 import { Webcam } from "@/core/webcam";
 import { ref, onMounted, onUnmounted  } from 'vue'
 
-let avatar = new Avatar();
+let avatar = Avatar.random();
 avatar.name = "David";
 
 let landmarks = ref([]);

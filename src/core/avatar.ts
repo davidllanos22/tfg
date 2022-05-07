@@ -3,6 +3,7 @@ export const AvatarLandmarks = [0, 1, 6, 17, 55, 52, 70, 61, 291, 285, 282, 276,
 
 export class Avatar{
   private _name: string;
+  private _backgroundColor: string;
   private _shape: AvatarPart;
   private _mouth: AvatarPart;
   private _nose: AvatarPart;
@@ -12,6 +13,14 @@ export class Avatar{
 
   public get name(): string {
     return this._name;
+  }
+
+  public set backgroundColor(value: string) {
+    this._backgroundColor = value;
+  }
+
+  public get backgroundColor(): string {
+    return this._backgroundColor;
   }
 
   public set name(value: string) {
@@ -73,6 +82,14 @@ export class Avatar{
     Object.keys(data).forEach((key: string)=>{
       avatar[key] = data[key];
     });
+
+    return avatar;
+  }
+
+  static random(): Avatar{
+    let avatar = new Avatar();
+
+    avatar.backgroundColor = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 
     return avatar;
   }
