@@ -4,6 +4,9 @@ import { Drawing } from "@/core/drawing";
 import { MathUtils } from "@/core/mathUtils";
 import { ref, onMounted, onUnmounted } from 'vue'
 
+
+let mirrorEnabled = false;
+
 let props = defineProps({
   image: null,
   landmarks: null
@@ -24,14 +27,27 @@ function draw(){
   
   let ctx = cvs.getContext('2d');
 
+  ctx.save();
+
+  if(mirrorEnabled){
+    ctx.translate(cvs.width, 1);
+    ctx.scale(-1, 1);
+  }
+
   if(props.image) ctx.drawImage(props.image, 0, 0, cvs.width, cvs.height);
 
   AvatarLandmarks.forEach((i)=>{
     let landmark = props.landmarks[i];
     if(landmark){
-      Drawing.fillCircle(ctx, landmark.x * cvs.width, landmark.y * cvs.height, 2, "#FF0000");
+      let x = landmark.x * cvs.width;
+      let y = landmark.y * cvs.height;
+      let color = "#FF0000";
+      Drawing.fillCircle(ctx, x, y, 2, color);
+      Drawing.drawText(ctx, i, x, y, 12, "blue");
     }
   });
+
+  ctx.restore();
 
   requestAnimationFrame(draw.bind(this));
 }
@@ -40,6 +56,6 @@ function draw(){
 
 <template>
   <br>
-  <canvas class="videocvs" width="400" height="400" style="transform: scale(-1, 1);"></canvas>
+  <canvas class="videocvs" width="400" height="400"></canvas>
   <br>
 </template>

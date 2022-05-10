@@ -27,4 +27,10 @@ export abstract class Drawing{
     ctx.drawImage(img, tX * 16, tY * 16, 16, 16, 0, 0, 16, 16);
     ctx.restore();
   }
+
+  static drawText(ctx: any, text: string, x: number, y: number, size: number, color: string){
+    ctx.font = size + "px Arial"
+    ctx.fillStyle = color;
+    ctx.fillText(text, x, y);
+  }
 }

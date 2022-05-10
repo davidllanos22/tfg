@@ -10,6 +10,8 @@ const bodyImage = Drawing.createImage("body.png");
 const hairImage = Drawing.createImage("hair.png");
 const partsImage = Drawing.createImage("parts.png");
 
+let mirrorEnabled = false;
+
 let props = defineProps({
   avatar: Avatar,
   landmarks: null
@@ -37,9 +39,10 @@ function draw(){
 
   Drawing.clearCanvas(ctx, cvs.width, cvs.height, props.avatar.backgroundColor || "#26282B");
 
-  ctx.translate(cvs.width, 1);
-
-  ctx.scale(-1, 1);
+  if(mirrorEnabled){
+    ctx.translate(cvs.width, 1);
+    ctx.scale(-1, 1);
+  }
 
   let centerX = cvs.width / 2;
   let centerY = cvs.height / 2;
@@ -49,7 +52,10 @@ function draw(){
   // let left = getLandmark(454);
   // let right = getLandmark(234);
 
-  let angle = getHeadRotation();
+  let rotationX = getHeadRotationX();
+  let rotationY = getHeadRotationY();
+  let rotationZ = getHeadRotationZ();
+
   let width = 64;//distance(left, right); // TODO: distancia entre el punto izquierdo(454) y derecho(234) para saber el ancho
   let height = 64;//distance(top, bottom); // TODO: distancia entre el punto superior(10) e inferior(152) para saber el alto
   
@@ -67,7 +73,7 @@ function draw(){
   
   ctx.save()
   ctx.translate(centerX , centerY);
-  ctx.rotate(angle);
+  ctx.rotate(rotationZ);
   ctx.scale(3, 3);
 
   //ctx.rotate(10)
@@ -82,6 +88,9 @@ function draw(){
   
   let leftEyeClosed = isLeftEyeClosed();
   let rightEyeClosed = isRightEyeClosed();
+
+  ctx.save();
+  ctx.translate(rotationY * -3, rotationX * 3);
 
   // right eyebrow
   Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16, 0, 0, false, 0);
@@ -102,6 +111,8 @@ function draw(){
   // mouth
   Drawing.drawSpriteSheet(ctx, partsImage, x + 24, y + 44, 3, 0, false, 0);
 
+  ctx.restore();
+
   ctx.drawImage(hairImage, x, y - 20);
 
   ctx.restore();
@@ -116,13 +127,52 @@ function getLandmark(index){
   return props.landmarks ? props.landmarks[index] : null;
 }
 
-function getHeadRotation(){
+// La rotación en Y es un offset entre el punto de la nariz y los puntos superior e inferior
+function getHeadRotationX(){
+  let nose = getLandmark(1);
+  let top = getLandmark(10);
+  let bottom = getLandmark(152);
+
+  if(nose == null || top == null || bottom == null) return 0;
+
+  let distanceTop = MathUtils.distance(nose, top);
+  let distanceBottom = MathUtils.distance(nose, bottom);
+
+  let diff = Math.abs(distanceTop - distanceBottom);
+  let threshold = 0.07;
+
+  if(diff < threshold) return 0;
+  else if(distanceBottom > distanceTop) return -1;
+  else if(distanceTop > distanceBottom) return 1;
+}
+
+function getHeadRotationZ(){
   let top = getLandmark(10);
   let bottom = getLandmark(152);
 
   if(top == null || bottom == null) return 0;
 
   return Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180);
+}
+
+// La rotación en Y es un offset entre el punto de la nariz y los puntos laterales
+function getHeadRotationY(){
+  let nose = getLandmark(1);
+  let left = getLandmark(454);
+  let right = getLandmark(234);
+
+  if(nose == null || left == null || right == null) return 0;
+
+  let distanceLeft = MathUtils.distance(nose, left);
+  let distanceRight = MathUtils.distance(nose, right);
+
+  let diff = Math.abs(distanceLeft - distanceRight);
+  console.log(diff)
+  let threshold = 0.07;
+
+  if(diff < threshold) return 0;
+  else if(distanceRight > distanceLeft) return -1;
+  else if(distanceLeft > distanceRight) return 1;
 }
 
 function isLeftEyeClosed(){
