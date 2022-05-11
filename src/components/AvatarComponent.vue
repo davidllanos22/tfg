@@ -2,7 +2,7 @@
 import { Avatar, AvatarLandmarks } from "@/core/avatar";
 import { Drawing } from "@/core/drawing";
 import { MathUtils } from "@/core/mathUtils";
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, inject } from 'vue';
 
 //TODO: cargar todas las imágenes
 const faceImage = Drawing.createImage("face.png");
@@ -10,7 +10,7 @@ const bodyImage = Drawing.createImage("body.png");
 const hairImage = Drawing.createImage("hair.png");
 const partsImage = Drawing.createImage("parts.png");
 
-let mirrorEnabled = false;
+let settings = inject("settings");
 
 let props = defineProps({
   avatar: Avatar,
@@ -39,7 +39,7 @@ function draw(){
 
   Drawing.clearCanvas(ctx, cvs.width, cvs.height, props.avatar.backgroundColor || "#26282B");
 
-  if(mirrorEnabled){
+  if(settings.mirrorEnabled){
     ctx.translate(cvs.width, 1);
     ctx.scale(-1, 1);
   }
@@ -167,7 +167,6 @@ function getHeadRotationY(){
   let distanceRight = MathUtils.distance(nose, right);
 
   let diff = Math.abs(distanceLeft - distanceRight);
-  console.log(diff)
   let threshold = 0.07;
 
   if(diff < threshold) return 0;

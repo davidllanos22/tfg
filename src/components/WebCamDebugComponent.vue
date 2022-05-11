@@ -1,11 +1,9 @@
 <script setup>
-import { Avatar, AvatarLandmarks } from "@/core/avatar";
+import { AvatarLandmarks } from "@/core/avatar";
 import { Drawing } from "@/core/drawing";
-import { MathUtils } from "@/core/mathUtils";
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, inject } from 'vue'
 
-
-let mirrorEnabled = false;
+let settings = inject("settings");
 
 let props = defineProps({
   image: null,
@@ -29,7 +27,7 @@ function draw(){
 
   ctx.save();
 
-  if(mirrorEnabled){
+  if(settings.mirrorEnabled){
     ctx.translate(cvs.width, 1);
     ctx.scale(-1, 1);
   }
