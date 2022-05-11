@@ -47,19 +47,12 @@ function draw(){
   let centerX = cvs.width / 2;
   let centerY = cvs.height / 2;
   
-  // let top = getLandmark(10);
-  // let bottom = getLandmark(152); 
-  // let left = getLandmark(454);
-  // let right = getLandmark(234);
-
   let rotationX = getHeadRotationX();
   let rotationY = getHeadRotationY();
   let rotationZ = getHeadRotationZ();
 
-  // console.log("rotationY", rotationY);
-
-  let width = 64;//distance(left, right); // TODO: distancia entre el punto izquierdo(454) y derecho(234) para saber el ancho
-  let height = 64;//distance(top, bottom); // TODO: distancia entre el punto superior(10) e inferior(152) para saber el alto
+  let width = 64;
+  let height = 64;
   
   let x = - width / 2;
   let y = - height / 2 - 20;
@@ -82,36 +75,29 @@ function draw(){
 
   ctx.drawImage(faceImage, x, y);
 
-
-  //let faceHeight = MathUtils.distance(top, bottom);
-  
-  // Distancia entre punto superior e inferior para tomar como referencia de tamaño
-  // Distancia entre parpado superior e inferior, si es más pequeño que threshold está cerrado
-  
-  let leftEyeClosed = isLeftEyeClosed();
-  let rightEyeClosed = isRightEyeClosed();
-
   ctx.save();
   ctx.translate(rotationY * 3, rotationX * 5);
 
-  // right eyebrow
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16, 0, 0, false, 0);
-  // right eye opened
-  if(!rightEyeClosed) Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 23, 1, 0, false, 0);
-  // right eye closed
-  if(rightEyeClosed) Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 23, 0, 1, false, 0);
+  // Draw right eyebrow
+  Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16, 1, 0, false, 0);
 
-  // left eyebrow
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 16, 0, 0, true, 0);
-  // left eye opened
-  if(!leftEyeClosed) Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 23, 1, 0, true, 0);
-  // left eye closed
-  if(leftEyeClosed) Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 23, 0, 1, true, 0);
+  // Draw right eye 
+  let rightEye = getRightEye();
+  Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 23, 0, rightEye, false, 0);
 
-  // nose
+  // Draw left eyebrow
+  Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 16, 1, 0, true, 0);
+
+  // Draw left eye
+  let leftEye = getLeftEye();
+  Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 23, 0, leftEye, true, 0);
+
+  // Draw nose
   Drawing.drawSpriteSheet(ctx, partsImage, x + 24, y + 34, 2, 0, false, 0);
-  // mouth
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 24, y + 44, 3, 0, false, 0);
+
+  // Draw mouth
+  let mouth = getMouth();
+  Drawing.drawSpriteSheet(ctx, partsImage, x + 24, y + 44, 3, mouth, false, 0);
 
   ctx.restore();
 
@@ -120,7 +106,6 @@ function draw(){
   ctx.restore();
 
   ctx.restore();
-
 
   requestAnimationFrame(draw.bind(this));
 }
@@ -197,6 +182,22 @@ function isRightEyeClosed(){
 
   let leftEyeDistance = MathUtils.distance(leftEyeTop, leftEyeBottom);
   return leftEyeDistance < 0.01;
+}
+
+function getLeftEye(){
+  let leftEyeClosed = isLeftEyeClosed();
+  if(leftEyeClosed) return 0;
+  else return 1;
+}
+
+function getRightEye(){
+  let rightEyeClosed = isRightEyeClosed();
+  if(rightEyeClosed) return 0;
+  else return 1;
+}
+
+function getMouth(){
+  return 0;
 }
 
 </script>
