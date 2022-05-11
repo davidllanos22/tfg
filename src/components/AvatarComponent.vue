@@ -56,6 +56,8 @@ function draw(){
   let rotationY = getHeadRotationY();
   let rotationZ = getHeadRotationZ();
 
+  // console.log("rotationY", rotationY);
+
   let width = 64;//distance(left, right); // TODO: distancia entre el punto izquierdo(454) y derecho(234) para saber el ancho
   let height = 64;//distance(top, bottom); // TODO: distancia entre el punto superior(10) e inferior(152) para saber el alto
   
@@ -90,7 +92,7 @@ function draw(){
   let rightEyeClosed = isRightEyeClosed();
 
   ctx.save();
-  ctx.translate(rotationY * -3, rotationX * 3);
+  ctx.translate(rotationY * 3, rotationX * 5);
 
   // right eyebrow
   Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16, 0, 0, false, 0);
@@ -141,18 +143,11 @@ function getHeadRotationX(){
   let diff = Math.abs(distanceTop - distanceBottom);
   let threshold = 0.07;
 
-  if(diff < threshold) return 0;
-  else if(distanceBottom > distanceTop) return -1;
-  else if(distanceTop > distanceBottom) return 1;
-}
+  return Math.max(-1.5, Math.min(1.5, 1.5 - (distanceBottom / distanceTop)));
 
-function getHeadRotationZ(){
-  let top = getLandmark(10);
-  let bottom = getLandmark(152);
-
-  if(top == null || bottom == null) return 0;
-
-  return Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180);
+  // if(diff < threshold) return 0;
+  // else if(distanceBottom > distanceTop) return -1;
+  // else if(distanceTop > distanceBottom) return 1;
 }
 
 // La rotación en Y es un offset entre el punto de la nariz y los puntos laterales
@@ -169,9 +164,19 @@ function getHeadRotationY(){
   let diff = Math.abs(distanceLeft - distanceRight);
   let threshold = 0.07;
 
-  if(diff < threshold) return 0;
-  else if(distanceRight > distanceLeft) return -1;
-  else if(distanceLeft > distanceRight) return 1;
+  return Math.max(-1.5, Math.min(1.5, 1.5 - (distanceLeft / distanceRight)));
+  // if(diff < threshold) return 0;
+  // else if(distanceRight > distanceLeft) return 1;
+  // else if(distanceLeft > distanceRight) return -1;
+}
+
+function getHeadRotationZ(){
+  let top = getLandmark(10);
+  let bottom = getLandmark(152);
+
+  if(top == null || bottom == null) return 0;
+
+  return Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180);
 }
 
 function isLeftEyeClosed(){
