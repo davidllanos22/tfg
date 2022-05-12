@@ -29,7 +29,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <h1>AvatarPlay</h1>
-  <AvatarComponent :avatar="avatar" :landmarks="landmarks"/>
-  <WebCamDebugComponent :image="webcamImage" :landmarks="landmarks"/>
+  <div class="d-flex flex-column align-items-center">
+    <h1>{{avatar.name}}</h1>
+    <AvatarComponent style="width: 500px" :avatar="avatar" :landmarks="landmarks"/>
+  </div>
+  <!-- <WebCamDebugComponent :image="webcamImage" :landmarks="landmarks"/> -->
 </template>

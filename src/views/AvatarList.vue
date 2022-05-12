@@ -7,7 +7,7 @@ import { ref, onMounted, onUnmounted  } from 'vue'
 
 let avatars = [];
 
-for(let i = 0; i < 10; i++){
+for(let i = 0; i < 50; i++){
   let avatar = Avatar.random();
   avatar.name = i;
   avatars.push(avatar);
@@ -37,8 +37,9 @@ onUnmounted(() => {
   <h1>AvatarList</h1>
 
   <div class="w-100 d-flex flex-row flex-wrap justify-content-around">
-    <div v-for="avatar in avatars" :key="avatar.name">
+    <div class="d-flex flex-column align-items-center" v-for="avatar in avatars" :key="avatar.name">
       <AvatarComponent :avatar="avatar"/>
+      <span class="font-weight-bold">{{avatar.name}}</span>
     </div>
   </div>
 

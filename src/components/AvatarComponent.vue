@@ -27,10 +27,17 @@ onUnmounted(() => {
 
 function draw(){
   let cvs = document.querySelector(".cvs-" + props.avatar.name);
-  cvs.style.width = "200px";
-  cvs.style.height = "200px";
 
   if(!cvs) return;
+
+  if(cvs.style.width == ""){
+    cvs.style.width = "200px";
+    cvs.style.height = "200px";
+  }
+
+  let w = parseInt(cvs.style.width.replace("px", ""))
+  cvs.style.borderRadius = (w / 2) + "px";
+
   
   let ctx = cvs.getContext('2d');
 
@@ -45,7 +52,7 @@ function draw(){
   }
 
   let centerX = cvs.width / 2;
-  let centerY = cvs.height / 2;
+  let centerY = cvs.height - 121;
   
   let rotationX = getHeadRotationX();
   let rotationY = getHeadRotationY();
@@ -76,7 +83,7 @@ function draw(){
   ctx.drawImage(faceImage, x, y);
 
   ctx.save();
-  ctx.translate(rotationY * 3, rotationX * 5);
+  ctx.translate(rotationY * 3, rotationX * 6);
 
   // Draw right eyebrow
   Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16, 1, 0, false, 0);
@@ -125,14 +132,9 @@ function getHeadRotationX(){
   let distanceTop = MathUtils.distance(nose, top);
   let distanceBottom = MathUtils.distance(nose, bottom);
 
-  let diff = Math.abs(distanceTop - distanceBottom);
-  let threshold = 0.07;
+  let value = 1.0 - (distanceBottom / distanceTop);
 
-  return Math.max(-1.5, Math.min(1.5, 1.5 - (distanceBottom / distanceTop)));
-
-  // if(diff < threshold) return 0;
-  // else if(distanceBottom > distanceTop) return -1;
-  // else if(distanceTop > distanceBottom) return 1;
+  return Math.max(-1.5, Math.min(1.5, value));
 }
 
 // La rotación en Y es un offset entre el punto de la nariz y los puntos laterales
@@ -146,13 +148,9 @@ function getHeadRotationY(){
   let distanceLeft = MathUtils.distance(nose, left);
   let distanceRight = MathUtils.distance(nose, right);
 
-  let diff = Math.abs(distanceLeft - distanceRight);
-  let threshold = 0.07;
+  let value = 1.5 - (distanceLeft / distanceRight);
 
-  return Math.max(-1.5, Math.min(1.5, 1.5 - (distanceLeft / distanceRight)));
-  // if(diff < threshold) return 0;
-  // else if(distanceRight > distanceLeft) return 1;
-  // else if(distanceLeft > distanceRight) return -1;
+  return Math.max(-1.5, Math.min(1.5, value));
 }
 
 function getHeadRotationZ(){
@@ -203,8 +201,5 @@ function getMouth(){
 </script>
 
 <template>
-  <span>{{avatar.name}}</span>
-  <br>
-  <canvas :class="'cvs-' + avatar.name" width="400" height="400"></canvas>
-  <br>
+  <canvas :class="'cvs-' + avatar.name" width="400" height="400" style="image-rendering: pixelated;"></canvas>
 </template>

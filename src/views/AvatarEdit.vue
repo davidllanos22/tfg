@@ -1,6 +1,6 @@
 <script setup>
 import AvatarComponent from "@/components/AvatarComponent.vue";
-import ColorWheelComponent from "@/components/ColorWheelComponent.vue";
+import ColorSelectorComponent from "@/components/ColorSelectorComponent.vue";
 import { Avatar } from "@/core/avatar";
 import { Webcam } from "@/core/webcam";
 import { ref, onMounted, onUnmounted  } from 'vue';
@@ -26,10 +26,14 @@ onUnmounted(() => {
   webcam.destroy();
 });
 
+function onColorSelectorChange(event){
+  let color = event.target.value;
+  avatar.backgroundColor = color;
+}
 </script>
 
 <template>
   <h1>AvatarEdit</h1>
   <AvatarComponent :avatar="avatar"/>
-  <ColorWheelComponent/>
+  <ColorSelectorComponent @input="onColorSelectorChange"/>
 </template>

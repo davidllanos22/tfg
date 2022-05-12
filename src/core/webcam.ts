@@ -59,8 +59,8 @@ export class Webcam{
   }
 
   destroy(){
-    this.camera.stop();
-    this.videoElement.remove();
+    if(this.camera) this.camera.stop();
+    if(this.videoElement) this.videoElement.remove();
   }
 
   getLandmarksFormatted(multiFaceLandmarks: any){
