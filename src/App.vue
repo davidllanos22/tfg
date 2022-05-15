@@ -1,15 +1,11 @@
 <script setup>
+import HeaderComponent from "@/components/HeaderComponent.vue";
 
 </script>
 
 <template>
-
-  <router-link to="/">Go to Home</router-link>
-  <router-link to="/edit">Go to Edit</router-link>
-  <router-link to="/list">Go to List</router-link>
-  <router-link to="/play">Go to Play</router-link>
-
-  <router-view></router-view>
+  <HeaderComponent/>
+  <router-view style="margin-top: 70px"></router-view>
 </template>
 
 <style>

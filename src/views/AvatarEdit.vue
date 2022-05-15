@@ -3,7 +3,9 @@ import AvatarComponent from "@/components/AvatarComponent.vue";
 import ColorSelectorComponent from "@/components/ColorSelectorComponent.vue";
 import { Avatar } from "@/core/avatar";
 import { Webcam } from "@/core/webcam";
-import { ref, onMounted, onUnmounted  } from 'vue';
+import { ref, onMounted, onUnmounted, inject  } from 'vue';
+
+let settings = inject("settings");
 
 let avatar = Avatar.random();
 avatar.name = "David";
@@ -30,10 +32,19 @@ function onColorSelectorChange(event){
   let color = event.target.value;
   avatar.backgroundColor = color;
 }
+
 </script>
 
 <template>
-  <h1>AvatarEdit</h1>
-  <AvatarComponent :avatar="avatar"/>
-  <ColorSelectorComponent @input="onColorSelectorChange"/>
+  <div>
+    <AvatarComponent :avatar="avatar"/>
+    <div>
+
+    </div>
+    
+    <div>
+      <span>Background color</span>
+      <ColorSelectorComponent :selected="avatar.backgroundColor" @input="onColorSelectorChange"/>
+    </div>
+  </div>
 </template>

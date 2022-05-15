@@ -1,21 +1,12 @@
 <script setup>
-import { ref, onMounted, onUnmounted  } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-onMounted(() => {
-
+let props = defineProps({
+  selected: String,
 });
-
-onUnmounted(() => {
-
-});
-
 
 </script>
 
 <template>
-  <input type="color" id="color-selector-input">
+  <input :value="props.selected" type="color">
 </template>
-
-<style scoped>
-
-</style>

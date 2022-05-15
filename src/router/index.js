@@ -1,15 +1,9 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Home from "@/views/Home.vue";
 import AvatarEdit from "@/views/AvatarEdit.vue";
 import AvatarList from "@/views/AvatarList.vue";
 import AvatarPlay from "@/views/AvatarPlay.vue";
 
 const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
   {
     path: "/edit",
     name: "Edit Avatar",
@@ -24,7 +18,11 @@ const routes = [
     path: "/play",
     name: "Avatar",
     component: AvatarPlay,
-  }
+  },
+  {
+    path: "/:catchAll(.*)",
+    redirect: "/list"
+  },
 ];
 
 const router = createRouter({

@@ -14,7 +14,8 @@ let settings = inject("settings");
 
 let props = defineProps({
   avatar: Avatar,
-  landmarks: null
+  landmarks: null,
+  hideBorder: Boolean
 });
 
 onMounted(() => {
@@ -35,9 +36,10 @@ function draw(){
     cvs.style.height = "200px";
   }
 
-  let w = parseInt(cvs.style.width.replace("px", ""))
-  cvs.style.borderRadius = (w / 2) + "px";
-
+  if(!props.hideBorder){
+    let w = parseInt(cvs.style.width.replace("px", ""))
+    cvs.style.borderRadius = (w / 2) + "px";
+  }
   
   let ctx = cvs.getContext('2d');
 

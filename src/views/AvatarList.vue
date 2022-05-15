@@ -4,6 +4,7 @@ import WebCamDebugComponent from "@/components/WebCamDebugComponent.vue";
 import { Avatar } from "@/core/avatar";
 import { Webcam } from "@/core/webcam";
 import { ref, onMounted, onUnmounted  } from 'vue'
+import router from "@/router";
 
 let avatars = [];
 
@@ -17,10 +18,7 @@ let landmarks = ref([]);
 let webcamImage = ref(null);
 let webcam;
 
-function onResults(results){
-  webcamImage.value = results.image;
-  landmarks.value = results.landmarks;
-}
+
 
 onMounted(() => {
   webcam = new Webcam();
@@ -31,17 +29,26 @@ onUnmounted(() => {
   webcam.destroy();
 });
 
+function onResults(results){
+  webcamImage.value = results.image;
+  landmarks.value = results.landmarks;
+}
+
+function onAvatarClick(avatar){
+  console.log(avatar)
+  router.push("/play");
+}
+
 </script>
 
 <template>
-  <h1>AvatarList</h1>
-
-  <div class="w-100 d-flex flex-row flex-wrap justify-content-around">
-    <div class="d-flex flex-column align-items-center" v-for="avatar in avatars" :key="avatar.name">
-      <AvatarComponent :avatar="avatar"/>
-      <span class="font-weight-bold">{{avatar.name}}</span>
+  <div class="w-100 d-flex flex-column align-items-center">
+    <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px; max-width: 900px;">
+      <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in avatars" :key="avatar.name">
+        <AvatarComponent @click="onAvatarClick(avatar)" :hideBorder="true" :avatar="avatar"/>
+        <span class="font-weight-bold">{{avatar.name}}</span>
+      </div>
     </div>
   </div>
-
   <!-- <WebCamDebugComponent :image="webcamImage" :landmarks="landmarks"/> -->
 </template>
