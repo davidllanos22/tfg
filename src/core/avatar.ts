@@ -74,7 +74,30 @@ export class Avatar{
   public set hair(value: AvatarPart) {
     this._hair = value;
   }
+  
+  public toJSON(){
+    let data: any = {};
 
+    data.name = this.name;
+    data.backgroundColor = this.backgroundColor;
+
+    return JSON.stringify(data);
+  }
+
+  public toURLQueryParam(){
+    return encodeURIComponent(this.toJSON());
+  }
+
+  static fromURLQueryParam(data: string){
+    let json;
+
+    try{
+      json = JSON.parse(decodeURIComponent(data));
+    }catch(e){
+      return null;
+    }
+    return Avatar.fromJSON(json);
+  }
 
   static fromJSON(data: any): Avatar {
     let avatar = new Avatar();

@@ -1,8 +1,6 @@
 <script setup>
 import AvatarComponent from "@/components/AvatarComponent.vue";
-import WebCamDebugComponent from "@/components/WebCamDebugComponent.vue";
 import { Avatar } from "@/core/avatar";
-import { Webcam } from "@/core/webcam";
 import { ref, onMounted, onUnmounted  } from 'vue'
 import router from "@/router";
 
@@ -14,29 +12,15 @@ for(let i = 0; i < 50; i++){
   avatars.push(avatar);
 }
 
-let landmarks = ref([]);
-let webcamImage = ref(null);
-let webcam;
-
-
-
 onMounted(() => {
-  webcam = new Webcam();
-  webcam.init(onResults);
 });
 
 onUnmounted(() => {
-  webcam.destroy();
 });
 
-function onResults(results){
-  webcamImage.value = results.image;
-  landmarks.value = results.landmarks;
-}
 
 function onAvatarClick(avatar){
-  console.log(avatar)
-  router.push("/play");
+  router.push({path: "play", query: {data: avatar.toURLQueryParam()}});
 }
 
 </script>
@@ -50,5 +34,4 @@ function onAvatarClick(avatar){
       </div>
     </div>
   </div>
-  <!-- <WebCamDebugComponent :image="webcamImage" :landmarks="landmarks"/> -->
 </template>
