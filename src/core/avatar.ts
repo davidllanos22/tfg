@@ -85,14 +85,14 @@ export class Avatar{
   }
 
   public toURLQueryParam(){
-    return encodeURIComponent(this.toJSON());
+    return btoa(this.toJSON());
   }
 
   static fromURLQueryParam(data: string){
     let json;
 
     try{
-      json = JSON.parse(decodeURIComponent(data));
+      json = JSON.parse(atob(data));
     }catch(e){
       return null;
     }
