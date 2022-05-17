@@ -26,9 +26,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - uses: actions/checkout@master
       - name: Create 404.html file
-          uses: canastro/copy-file-action@master
+          uses: canastro/copy-action@master
           with:
             source: "dist/index.html"
             target: "dist/404.html"
