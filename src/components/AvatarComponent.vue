@@ -190,35 +190,33 @@ function getLeftEyebrowOffset(){
   return Math.max(0, distance * 100 - 5);
 }
 
-function isLeftEyeClosed(){
-  let rightEyeTop = getLandmark(387);
-  let rightEyeBottom = getLandmark(373);
-
-  if(rightEyeTop == null || rightEyeBottom == null) return false;
-
-  let rightEyeDistance = MathUtils.distance(rightEyeTop, rightEyeBottom);
-  return rightEyeDistance < 0.01;
-}
-
 function isRightEyeClosed(){
-  let leftEyeTop = getLandmark(160);
-  let leftEyeBottom = getLandmark(144);
-
-  if(leftEyeTop == null || leftEyeBottom == null) return false;
-
-  let leftEyeDistance = MathUtils.distance(leftEyeTop, leftEyeBottom);
-  return leftEyeDistance < 0.01;
+  
 }
 
 function getLeftEye(){
-  let leftEyeClosed = isLeftEyeClosed();
-  if(leftEyeClosed) return 0;
+  let leftEyeTop = getLandmark(387);
+  let leftEyeBottom = getLandmark(373);
+
+  if(leftEyeTop == null || leftEyeBottom == null) return 2;
+
+  let leftEyeDistance = MathUtils.distance(leftEyeTop, leftEyeBottom);
+
+  if(leftEyeDistance < 0.01) return 0;
+  else if(leftEyeDistance < 0.02) return 1;
   else return 2;
 }
 
 function getRightEye(){
-  let rightEyeClosed = isRightEyeClosed();
-  if(rightEyeClosed) return 0;
+  let rightEyeTop = getLandmark(160);
+  let rightEyeBottom = getLandmark(144);
+
+  if(rightEyeTop == null || rightEyeBottom == null) return 2;
+
+  let rightEyeDistance = MathUtils.distance(rightEyeTop, rightEyeBottom);
+
+  if(rightEyeDistance < 0.01) return 0;
+  else if(rightEyeDistance < 0.02) return 1;
   else return 2;
 }
 
@@ -235,7 +233,7 @@ function getMouth(){
   // TODO: mirar apertura horizontal
   // TODO: mirar apertura vertical
   if(mouthDistance < 0.1) return 0;
-  if(mouthDistance < 0.15) return 1;
+  else if(mouthDistance < 0.15) return 1;
   else return 2;
 }
 
