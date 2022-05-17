@@ -3,8 +3,10 @@ import AvatarComponent from "@/components/AvatarComponent.vue";
 import WebCamDebugComponent from "@/components/WebCamDebugComponent.vue";
 import { Avatar } from "@/core/avatar";
 import { Webcam } from "@/core/webcam";
-import { ref, onMounted, onUnmounted  } from 'vue'
+import { ref, onMounted, onUnmounted, inject } from 'vue'
 import router from "@/router";
+
+let settings = inject("settings");
 
 let data = router.currentRoute.value.query.data;
 let avatar = Avatar.fromURLQueryParam(data);
@@ -45,5 +47,5 @@ function onEditPressed(){
     </div>
   </div>
   
-  <!-- <WebCamDebugComponent :image="webcamImage" :landmarks="landmarks"/> -->
+  <WebCamDebugComponent v-if="settings.debugEnabled" :image="webcamImage" :landmarks="landmarks"/>
 </template>

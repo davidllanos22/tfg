@@ -197,7 +197,20 @@ function getRightEye(){
 }
 
 function getMouth(){
-  return 0;
+  let mouthTop = getLandmark(0);
+  let mouthLeft = getLandmark(291);
+  let mouthRight = getLandmark(61);
+  let mouthBottom = getLandmark(17);
+
+  if(mouthTop == null || mouthLeft == null || mouthRight == null || mouthBottom == null) return 0;
+
+  let mouthDistance = MathUtils.distance(mouthTop, mouthBottom);
+
+  // TODO: mirar apertura horizontal
+  // TODO: mirar apertura vertical
+  if(mouthDistance < 0.1) return 0;
+  if(mouthDistance < 0.15) return 1;
+  else return 2;
 }
 
 </script>

@@ -5,7 +5,9 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 
 <template>
   <HeaderComponent/>
-  <router-view style="margin-top: 70px"></router-view>
+  <div style="margin-top: 70px">
+    <router-view></router-view>
+  </div>
 </template>
 
 <style>
