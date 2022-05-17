@@ -87,15 +87,19 @@ function draw(){
   ctx.save();
   ctx.translate(rotationY * 3, rotationX * 6);
 
+  let rightEyebrowOffset = getRightEyebrowOffset();
+
   // Draw right eyebrow
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16, 1, 0, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16 - rightEyebrowOffset, 1, 0, false, 0);
 
   // Draw right eye 
   let rightEye = getRightEye();
   Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 23, 0, rightEye, false, 0);
 
+  let leftEyebrowOffset = getLeftEyebrowOffset();
+
   // Draw left eyebrow
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 16, 1, 0, true, 0);
+  Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 16 - leftEyebrowOffset, 1, 0, true, 0);
 
   // Draw left eye
   let leftEye = getLeftEye();
@@ -164,6 +168,28 @@ function getHeadRotationZ(){
   return Math.atan2(bottom.y - top.y, bottom.x - top.x) - (90 * Math.PI / 180);
 }
 
+function getRightEyebrowOffset(){
+  let rightEyebrowMiddle = getLandmark(52);
+  let rightEyeTop = getLandmark(160);
+
+  if(rightEyebrowMiddle == null || rightEyeTop == null) return 0;
+
+  let distance = MathUtils.distance(rightEyebrowMiddle, rightEyeTop);
+
+  return Math.max(0, distance * 100 - 5);
+}
+
+function getLeftEyebrowOffset(){
+  let leftEyebrowMiddle = getLandmark(282);
+  let leftEyeTop = getLandmark(387);
+
+  if(leftEyebrowMiddle == null || leftEyeTop == null) return 0;
+
+  let distance = MathUtils.distance(leftEyebrowMiddle, leftEyeTop);
+
+  return Math.max(0, distance * 100 - 5);
+}
+
 function isLeftEyeClosed(){
   let rightEyeTop = getLandmark(387);
   let rightEyeBottom = getLandmark(373);
@@ -187,13 +213,13 @@ function isRightEyeClosed(){
 function getLeftEye(){
   let leftEyeClosed = isLeftEyeClosed();
   if(leftEyeClosed) return 0;
-  else return 1;
+  else return 2;
 }
 
 function getRightEye(){
   let rightEyeClosed = isRightEyeClosed();
   if(rightEyeClosed) return 0;
-  else return 1;
+  else return 2;
 }
 
 function getMouth(){
