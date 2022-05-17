@@ -5,10 +5,34 @@ import { MathUtils } from "@/core/mathUtils";
 import { ref, onMounted, onUnmounted, inject } from 'vue';
 
 //TODO: cargar todas las imágenes
-const faceImage = Drawing.createImage("face.png");
-const bodyImage = Drawing.createImage("body.png");
-const hairImage = Drawing.createImage("hair.png");
-const partsImage = Drawing.createImage("parts.png");
+
+let faceCanvas = createImageCanvas("face.png", "#ffffff");
+let bodyCanvas = createImageCanvas("body.png", "#ffffff");
+let hairCanvas = createImageCanvas("hair.png", "#ffffff");
+let partsCanvas = createImageCanvas("parts.png", "#ffffff");
+
+function createImageCanvas(url, color){
+  let cvs = document.createElement("canvas");
+
+  let image = Drawing.createImage(url, ()=>{
+    let ctx = cvs.getContext("2d");
+
+    cvs.width = image.width;
+    cvs.height = image.height;
+
+    ctx.drawImage(image, 0, 0);
+
+    ctx.globalCompositeOperation = "multiply";
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.drawImage(image, 0, 0);
+  });
+  
+  return cvs;
+}
 
 let settings = inject("settings");
 
@@ -71,7 +95,7 @@ function draw(){
   ctx.translate(centerX , centerY);
   ctx.scale(3, 3);
 
-  ctx.drawImage(bodyImage, x - 7, y + 56);
+  ctx.drawImage(bodyCanvas, x - 7, y + 56);
 
   ctx.restore();
   
@@ -82,7 +106,7 @@ function draw(){
 
   //ctx.rotate(10)
 
-  ctx.drawImage(faceImage, x, y);
+  ctx.drawImage(faceCanvas, x, y);
 
   ctx.save();
   ctx.translate(rotationY * 3, rotationX * 6);
@@ -90,31 +114,31 @@ function draw(){
   let rightEyebrowOffset = getRightEyebrowOffset();
 
   // Draw right eyebrow
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 16 - rightEyebrowOffset, 1, 0, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 16 - rightEyebrowOffset, 1, 0, false, 0);
 
   // Draw right eye 
   let rightEye = getRightEye();
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 12, y + 23, 0, rightEye, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 23, 0, rightEye, false, 0);
 
   let leftEyebrowOffset = getLeftEyebrowOffset();
 
   // Draw left eyebrow
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 16 - leftEyebrowOffset, 1, 0, true, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 16 - leftEyebrowOffset, 1, 0, true, 0);
 
   // Draw left eye
   let leftEye = getLeftEye();
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 52, y + 23, 0, leftEye, true, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 23, 0, leftEye, true, 0);
 
   // Draw nose
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 24, y + 34, 2, 0, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 34, 2, 0, false, 0);
 
   // Draw mouth
   let mouth = getMouth();
-  Drawing.drawSpriteSheet(ctx, partsImage, x + 24, y + 44, 3, mouth, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 44, 3, mouth, false, 0);
 
   ctx.restore();
 
-  ctx.drawImage(hairImage, x, y - 20);
+  ctx.drawImage(hairCanvas, x, y - 20);
 
   ctx.restore();
 
