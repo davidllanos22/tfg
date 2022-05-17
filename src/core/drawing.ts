@@ -1,7 +1,8 @@
 export abstract class Drawing{
   static createImage(src: string){
+    let base = (import.meta as any).env.BASE_URL;
     let image = new Image();
-    image.src = "./assets/" + src;
+    image.src = base + "assets/" + src;
 
     return image;
   }
