@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@master
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -28,10 +27,7 @@ jobs:
         run: npm run build
 
       - name: Create 404.html file
-          uses: canastro/copy-file-action@master
-          with:
-            source: "dist/index.html"
-            target: "dist/404.html"
+        run: cp dist/index.html dist/404.html
 
       - name: Deploy to GH Page
         uses: JamesIves/github-pages-deploy-action@4.1.1
