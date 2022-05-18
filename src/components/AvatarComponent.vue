@@ -1,38 +1,8 @@
 <script setup>
-import { Avatar, AvatarLandmarks } from "@/core/avatar";
+import { Avatar, AvatarLandmarks, DefaultColors } from "@/core/avatar";
 import { Drawing } from "@/core/drawing";
 import { MathUtils } from "@/core/mathUtils";
 import { ref, onMounted, onUnmounted, inject } from 'vue';
-
-//TODO: cargar todas las imágenes
-
-let faceCanvas = createImageCanvas("face.png", "#ffffff");
-let bodyCanvas = createImageCanvas("body.png", "#ffffff");
-let hairCanvas = createImageCanvas("hair.png", "#ffffff");
-let partsCanvas = createImageCanvas("parts.png", "#ffffff");
-
-function createImageCanvas(url, color){
-  let cvs = document.createElement("canvas");
-
-  let image = Drawing.createImage(url, ()=>{
-    let ctx = cvs.getContext("2d");
-
-    cvs.width = image.width;
-    cvs.height = image.height;
-
-    ctx.drawImage(image, 0, 0);
-
-    ctx.globalCompositeOperation = "multiply";
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, cvs.width, cvs.height);
-
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'destination-in';
-    ctx.drawImage(image, 0, 0);
-  });
-  
-  return cvs;
-}
 
 let settings = inject("settings");
 
@@ -41,6 +11,26 @@ let props = defineProps({
   landmarks: null,
   hideBorder: Boolean
 });
+
+let faceCanvas; 
+let bodyCanvas; 
+let hairCanvas; 
+let partsCanvas;
+
+function updateColors(){
+  let replaceColors = Object.keys(DefaultColors).filter((value, i)=>i >0).map((color)=>{
+    return [DefaultColors[color], props.avatar.colors[color]]
+  });
+
+  faceCanvas = Drawing.createImageCanvas("face.png", replaceColors);
+  bodyCanvas = Drawing.createImageCanvas("body.png", replaceColors);
+  hairCanvas = Drawing.createImageCanvas("hair.png", replaceColors);
+  partsCanvas = Drawing.createImageCanvas("parts.png", replaceColors);
+}
+
+// TODO: no pintar hasta que estén todos los canvas disponibles
+// TODO: renderizar solo una vez si nop se le van a pasar landmarks.
+updateColors();
 
 onMounted(() => {
   draw();
@@ -60,17 +50,17 @@ function draw(){
     cvs.style.height = "200px";
   }
 
-  if(!props.hideBorder){
-    let w = parseInt(cvs.style.width.replace("px", ""))
-    cvs.style.borderRadius = (w / 2) + "px";
-  }
+  // if(!props.hideBorder){
+  //   let w = parseInt(cvs.style.width.replace("px", ""))
+  //   cvs.style.borderRadius = (w / 2) + "px";
+  // }
   
   let ctx = cvs.getContext('2d');
 
   ctx.save();
   ctx.imageSmoothingEnabled = false;
 
-  Drawing.clearCanvas(ctx, cvs.width, cvs.height, props.avatar.backgroundColor || "#26282B");
+  Drawing.clearCanvas(ctx, cvs.width, cvs.height, props.avatar.colors.background || "#26282B");
 
   if(settings.mirrorEnabled){
     ctx.translate(cvs.width, 1);

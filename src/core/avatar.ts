@@ -1,9 +1,22 @@
+import { Drawing } from "./drawing";
+
 export type AvatarPart = {id: string, color: string};
+export type AvatarColors = { background?: string, skin?: string, skinDark?: string, clothes?: string, clothesDark?: string, hair?: string, hairDark?: string, eyes?: string};
 export const AvatarLandmarks = [0, 1, 6, 17, 55, 52, 70, 61, 291, 285, 282, 276, 160, 158, 144, 153, 385, 387, 380, 373, 10, 152, 454, 234];
+export const DefaultColors: AvatarColors = {
+  background: "#ffffff",
+  skin: "#eec39a",
+  skinDark: "#d9a066",
+  clothes: "#9badb7",
+  clothesDark: "#847e87",
+  hair: "#222034",
+  hairDark: "#000000",
+  eyes: "#663931"
+}
+
 
 export class Avatar{
   private _name: string;
-  private _backgroundColor: string;
   private _shape: AvatarPart;
   private _mouth: AvatarPart;
   private _nose: AvatarPart;
@@ -11,20 +24,22 @@ export class Avatar{
   private _eyebrows: AvatarPart;
   private _hair: AvatarPart;
 
+  private _colors: AvatarColors = {...DefaultColors};
+
   public get name(): string {
     return this._name;
   }
 
-  public set backgroundColor(value: string) {
-    this._backgroundColor = value;
-  }
-
-  public get backgroundColor(): string {
-    return this._backgroundColor;
-  }
-
   public set name(value: string) {
     this._name = value;
+  }
+
+  public set colors(value: AvatarColors) {
+    this._colors = value;
+  }
+
+  public get colors(): AvatarColors {
+    return this._colors;
   }
 
   public get shape(): AvatarPart {
@@ -79,7 +94,7 @@ export class Avatar{
     let data: any = {};
 
     data.name = this.name;
-    data.backgroundColor = this.backgroundColor;
+    data.colors = this.colors;
 
     return JSON.stringify(data);
   }
@@ -112,7 +127,20 @@ export class Avatar{
   static random(): Avatar{
     let avatar = new Avatar();
 
-    avatar.backgroundColor = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+    let hair = Drawing.randomRGBColor();
+    let hairDark = hair.map(c=>Math.max(0, c-20));
+    let skin = Drawing.randomRGBColor();
+    let skinDark = skin.map(c=>Math.max(0, c-20));
+    let clothes = Drawing.randomRGBColor();
+    let clothesDark = clothes.map(c=>Math.max(0, c-20));
+
+    avatar.colors.background = Drawing.randomHexColor();
+    avatar.colors.hair = Drawing.RGBtoHex(hair);
+    avatar.colors.hairDark = Drawing.RGBtoHex(hairDark);
+    avatar.colors.skin = Drawing.RGBtoHex(skin);
+    avatar.colors.skinDark = Drawing.RGBtoHex(skinDark);
+    avatar.colors.clothes = Drawing.RGBtoHex(clothes);
+    avatar.colors.clothesDark = Drawing.RGBtoHex(clothesDark);
 
     return avatar;
   }

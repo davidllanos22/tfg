@@ -34,9 +34,36 @@ onUnmounted(() => {
   webcam.destroy();
 });
 
-function onColorSelectorChange(event){
+function onBackgroundColorChange(event){
   let color = event.target.value;
-  avatar.backgroundColor = color;
+  avatar.colors.background = color;
+  updateURL();
+}
+
+function onSkinColorChange(event){
+  let color = event.target.value;
+  avatar.colors.skin = color;
+  //TODO: actualizar color oscuro
+  updateURL();
+}
+
+function onHairColorChange(event){
+  let color = event.target.value;
+  avatar.colors.hair = color;
+  //TODO: actualizar color oscuro
+  updateURL();
+}
+
+function onClothesColorChange(event){
+  let color = event.target.value;
+  avatar.colors.clothes = color;
+  //TODO: actualizar color oscuro
+  updateURL();
+}
+
+function onEyesColorChange(event){
+  let color = event.target.value;
+  avatar.colors.eyes = color;
   updateURL();
 }
 
@@ -49,9 +76,28 @@ function onColorSelectorChange(event){
 
     </div>
     
-    <div>
-      <span>Background color</span>
-      <ColorSelectorComponent :selected="avatar.backgroundColor" @input="onColorSelectorChange"/>
+    <div clas="d-flex flex-column">
+      <div>
+        <span>Background color</span>
+        <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+      </div>
+      <div>
+        <span>Skin color</span>
+        <ColorSelectorComponent :selected="avatar.colors.skin" @input="onSkinColorChange"/>
+      </div>
+      <div>
+        <span>Hair color</span>
+        <ColorSelectorComponent :selected="avatar.colors.hair" @input="onHairColorChange"/>
+      </div>
+      <div>
+        <span>Clothes color</span>
+        <ColorSelectorComponent :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
+      </div>
+      <div>
+        <span>Eyes color</span>
+        <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
+      </div>
+      
     </div>
   </div>
 </template>

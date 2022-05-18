@@ -36,4 +36,74 @@ export abstract class Drawing{
     ctx.fillStyle = color;
     ctx.fillText(text, x, y);
   }
+
+  static hexToRGB(hex: string) {
+    let array = hex.replace("#", "").match(/.{1,2}/g);
+
+    return [
+      parseInt(array[0], 16),
+      parseInt(array[1], 16),
+      parseInt(array[2], 16)
+    ];
+  }
+
+  static RGBtoHex(rgb) {
+    return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1]  << 8) + rgb[2] ).toString(16).slice(1);
+  }
+
+  static randomRGBColor(){
+    let rgb = [];
+
+    for(let i = 0; i < 3; i++){
+      rgb.push(Math.floor(Math.random() * 255));
+    }
+
+    return rgb;
+  }
+
+  static randomHexColor(){
+    let rgb = this.randomRGBColor();
+    return this.RGBtoHex(rgb);
+  }
+
+  static replaceColor(cvs: any, ctx: any, from: any, to: any){
+    let imageData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+    let fromRGB = Drawing.hexToRGB(from);
+    let toRGB = Drawing.hexToRGB(to);
+  
+    for (let i = 0; i < imageData.data.length; i += 4){
+      let pixelRGB = [imageData.data[i], imageData.data[i+1], imageData.data[i+2]];
+      if(this.isSameRGBColor(pixelRGB, fromRGB)){
+          imageData.data[i] = toRGB[0];
+          imageData.data[i+1] = toRGB[1];
+          imageData.data[i+2] = toRGB[2];
+      }
+    }
+  
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  static isSameRGBColor(a: any, b: any){
+    return a[0] == b[0] && a[1] == b[1] && a[2] == b[2];
+  }
+
+  static createImageCanvas(url: string, replaceColors: any){
+    let cvs = document.createElement("canvas");
+  
+    let image = Drawing.createImage(url, ()=>{
+      let ctx = cvs.getContext("2d");
+  
+      cvs.width = image.width;
+      cvs.height = image.height;
+  
+      ctx.drawImage(image, 0, 0);
+
+      replaceColors.forEach((colors: any)=>{
+        Drawing.replaceColor(cvs, ctx, colors[0], colors[1]);
+      });
+      
+    });
+    
+    return cvs;
+  }
 }
