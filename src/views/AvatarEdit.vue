@@ -2,6 +2,7 @@
 import AvatarComponent from "@/components/AvatarComponent.vue";
 import ColorSelectorComponent from "@/components/ColorSelectorComponent.vue";
 import { Avatar } from "@/core/avatar";
+import { Service } from "@/core/service";
 import { Webcam } from "@/core/webcam";
 import { ref, onMounted, onUnmounted, inject  } from 'vue';
 import router from "@/router";
@@ -9,7 +10,7 @@ import router from "@/router";
 let settings = inject("settings");
 
 let data = router.currentRoute.value.query.data;
-let avatar = Avatar.fromURLQueryParam(data);
+let avatar = Avatar.fromBase64(data);
 if(avatar == null) router.push("/list");
 
 let landmarks = ref([]);
@@ -22,7 +23,7 @@ function onResults(results){
 }
 
 function updateURL(){
-  router.replace({query: {data: avatar.toURLQueryParam()}});
+  router.replace({query: {data: avatar.toBase64()}});
 }
 
 onMounted(() => {
@@ -67,6 +68,10 @@ function onEyesColorChange(event){
   updateURL();
 }
 
+function onSavePressed(event){
+  Service.saveAvatar(avatar);
+}
+
 </script>
 
 <template>
@@ -97,6 +102,8 @@ function onEyesColorChange(event){
         <span>Eyes color</span>
         <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
       </div>
+
+      <button @click="onSavePressed">Save</button>
       
     </div>
   </div>

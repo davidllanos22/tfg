@@ -40,7 +40,7 @@ onUnmounted(() => {
 });
 
 function draw(){
-  let cvs = document.querySelector(".cvs-" + props.avatar.name);
+  let cvs = document.querySelector(".cvs-" + props.avatar.id);
 
   if(!cvs) return;
 
@@ -257,5 +257,5 @@ function getMouth(){
 </script>
 
 <template>
-  <canvas :class="'cvs-' + avatar.name" width="400" height="400" style="image-rendering: pixelated;"></canvas>
+  <canvas :class="'cvs-' + avatar.id" width="400" height="400" style="image-rendering: pixelated;"></canvas>
 </template>

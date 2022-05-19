@@ -1,3 +1,5 @@
+import { Utils } from "./utils";
+
 export abstract class Drawing{
   static createImage(src: string, onload: any = null){
     let base = (import.meta as any).env.BASE_URL;
@@ -47,33 +49,14 @@ export abstract class Drawing{
     ];
   }
 
-  static RGBtoHex(rgb) {
-    return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1]  << 8) + rgb[2] ).toString(16).slice(1);
-  }
-
-  static randomRGBColor(){
-    let rgb = [];
-
-    for(let i = 0; i < 3; i++){
-      rgb.push(Math.floor(Math.random() * 255));
-    }
-
-    return rgb;
-  }
-
-  static randomHexColor(){
-    let rgb = this.randomRGBColor();
-    return this.RGBtoHex(rgb);
-  }
-
-  static replaceColor(cvs: any, ctx: any, from: any, to: any){
+  static replaceCanvasColor(cvs: any, ctx: any, from: any, to: any){
     let imageData = ctx.getImageData(0, 0, cvs.width, cvs.height);
     let fromRGB = Drawing.hexToRGB(from);
     let toRGB = Drawing.hexToRGB(to);
   
     for (let i = 0; i < imageData.data.length; i += 4){
       let pixelRGB = [imageData.data[i], imageData.data[i+1], imageData.data[i+2]];
-      if(this.isSameRGBColor(pixelRGB, fromRGB)){
+      if(Utils.isSameRGBColor(pixelRGB, fromRGB)){
           imageData.data[i] = toRGB[0];
           imageData.data[i+1] = toRGB[1];
           imageData.data[i+2] = toRGB[2];
@@ -81,10 +64,6 @@ export abstract class Drawing{
     }
   
     ctx.putImageData(imageData, 0, 0);
-  }
-
-  static isSameRGBColor(a: any, b: any){
-    return a[0] == b[0] && a[1] == b[1] && a[2] == b[2];
   }
 
   static createImageCanvas(url: string, replaceColors: any, callback: any){
@@ -99,7 +78,7 @@ export abstract class Drawing{
       ctx.drawImage(image, 0, 0);
 
       replaceColors.forEach((colors: any)=>{
-        Drawing.replaceColor(cvs, ctx, colors[0], colors[1]);
+        Drawing.replaceCanvasColor(cvs, ctx, colors[0], colors[1]);
       });
       
       callback(cvs);

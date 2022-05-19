@@ -9,7 +9,7 @@ import router from "@/router";
 let settings = inject("settings");
 
 let data = router.currentRoute.value.query.data;
-let avatar = Avatar.fromURLQueryParam(data);
+let avatar = Avatar.fromBase64(data);
 if(avatar == null) router.push("/list");
 
 let landmarks = ref([]);
@@ -31,7 +31,7 @@ onUnmounted(() => {
 });
 
 function onEditPressed(){
-  router.push({path: "edit", query: {data: avatar.toURLQueryParam()}});
+  router.push({path: "edit", query: {data: avatar.toBase64()}});
 }
 
 </script>
