@@ -28,7 +28,7 @@ onUnmounted(() => {
 
 
 function onAvatarClick(avatar){
-  router.push({path: "play", query: {data: avatar.toBase64()}});
+  router.push({path: "edit", query: {data: avatar.toBase64()}});
 }
 
 </script>
