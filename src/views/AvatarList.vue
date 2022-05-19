@@ -29,7 +29,7 @@ function onAvatarClick(avatar){
   <div class="w-100 d-flex flex-column align-items-center">
     <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px; max-width: 900px;">
       <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in avatars" :key="avatar.name">
-        <AvatarComponent @click="onAvatarClick(avatar)" :hideBorder="true" :avatar="avatar"/>
+        <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :hideBorder="true" :avatar="avatar"/>
         <span class="font-weight-bold">{{avatar.name}}</span>
       </div>
     </div>

@@ -87,7 +87,7 @@ export abstract class Drawing{
     return a[0] == b[0] && a[1] == b[1] && a[2] == b[2];
   }
 
-  static createImageCanvas(url: string, replaceColors: any){
+  static createImageCanvas(url: string, replaceColors: any, callback: any){
     let cvs = document.createElement("canvas");
   
     let image = Drawing.createImage(url, ()=>{
@@ -102,8 +102,8 @@ export abstract class Drawing{
         Drawing.replaceColor(cvs, ctx, colors[0], colors[1]);
       });
       
+      callback(cvs);
     });
     
-    return cvs;
   }
 }

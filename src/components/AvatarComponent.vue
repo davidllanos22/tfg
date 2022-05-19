@@ -9,6 +9,7 @@ let settings = inject("settings");
 let props = defineProps({
   avatar: Avatar,
   landmarks: null,
+  static: Boolean,
   hideBorder: Boolean
 });
 
@@ -22,14 +23,12 @@ function updateColors(){
     return [DefaultColors[color], props.avatar.colors[color]]
   });
 
-  faceCanvas = Drawing.createImageCanvas("face.png", replaceColors);
-  bodyCanvas = Drawing.createImageCanvas("body.png", replaceColors);
-  hairCanvas = Drawing.createImageCanvas("hair.png", replaceColors);
-  partsCanvas = Drawing.createImageCanvas("parts.png", replaceColors);
+  Drawing.createImageCanvas("face.png", replaceColors, (cvs)=>faceCanvas = cvs);
+  Drawing.createImageCanvas("body.png", replaceColors, (cvs)=>bodyCanvas = cvs);
+  Drawing.createImageCanvas("hair.png", replaceColors, (cvs)=>hairCanvas = cvs);
+  Drawing.createImageCanvas("parts.png", replaceColors, (cvs)=>partsCanvas = cvs);
 }
 
-// TODO: no pintar hasta que estén todos los canvas disponibles
-// TODO: renderizar solo una vez si nop se le van a pasar landmarks.
 updateColors();
 
 onMounted(() => {
@@ -54,13 +53,18 @@ function draw(){
   //   let w = parseInt(cvs.style.width.replace("px", ""))
   //   cvs.style.borderRadius = (w / 2) + "px";
   // }
-  
+
   let ctx = cvs.getContext('2d');
 
   ctx.save();
   ctx.imageSmoothingEnabled = false;
 
   Drawing.clearCanvas(ctx, cvs.width, cvs.height, props.avatar.colors.background || "#26282B");
+
+  if(!faceCanvas || !bodyCanvas || !hairCanvas || !partsCanvas){
+    requestAnimationFrame(draw.bind(this));
+    return;
+  }
 
   if(settings.mirrorEnabled){
     ctx.translate(cvs.width, 1);
@@ -79,7 +83,6 @@ function draw(){
   
   let x = - width / 2;
   let y = - height / 2 - 20;
-
   
   ctx.save();
   ctx.translate(centerX , centerY);
@@ -134,7 +137,7 @@ function draw(){
 
   ctx.restore();
 
-  requestAnimationFrame(draw.bind(this));
+  if(!props.static) requestAnimationFrame(draw.bind(this));
 }
 
 function getLandmark(index){
