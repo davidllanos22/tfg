@@ -24,12 +24,12 @@ export abstract class Drawing{
     ctx.fill();
   }
 
-  static drawSpriteSheet(ctx: any, img: any, x: number, y: number, tX: number, tY: number, flip: boolean, angle: number){
+  static drawSpriteSheet(ctx: any, img: any, x: number, y: number, tX: number, tY: number, tW: number, tH: number, flip: boolean, angle: number){
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(angle);
     if(flip) ctx.scale(-1, 1);
-    ctx.drawImage(img, tX * 16, tY * 16, 16, 16, 0, 0, 16, 16);
+    ctx.drawImage(img, tX * tW, tY * tH, tW, tH, 0, 0, tW, tH);
     ctx.restore();
   }
 

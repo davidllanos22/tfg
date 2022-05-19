@@ -1,6 +1,6 @@
 import { Utils } from "./utils";
 
-export type AvatarPart = {image: string, x: number, y: number};
+export type AvatarPart = {image: string, index: number};
 export type AvatarColors = { background?: string, skin?: string, skinDark?: string, clothes?: string, clothesDark?: string, hair?: string, hairDark?: string, eyes?: string};
 
 export const AvatarLandmarks = [0, 1, 6, 17, 55, 52, 70, 61, 291, 285, 282, 276, 160, 158, 144, 153, 385, 387, 380, 373, 10, 152, 454, 234];

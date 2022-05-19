@@ -38,10 +38,12 @@ function onAvatarClick(avatar){
     <div class="w-100 d-flex flex-column flex-wrap justify-content-around" style="gap: 10px; max-width: 900px;">
       
       <div v-if="customAvatars.length > 0" class="d-flex flex-column">
-        <h1 class="mx-3 mb-3">My avatars</h1>
+        <h1 class="pop p-2 mx-1 mb-3 bg-primary">My avatars</h1>
         <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px;">
           <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in customAvatars" :key="avatar.id">
-            <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :hideBorder="true" :avatar="avatar"/>
+            <div class="pop mx-0 mb-2" style="height: 206px;">
+              <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :hideBorder="true" :avatar="avatar"/>
+            </div>
             <span class="font-weight-bold">{{avatar.name}}</span>
           </div>
         </div>
@@ -49,10 +51,12 @@ function onAvatarClick(avatar){
       </div>
      
       <div class="d-flex flex-column">
-        <h1 class="mx-3 mb-3">Random generated avatars</h1>
+        <h1 class="pop p-2 mx-1 mb-3 bg-danger">Random generated avatars</h1>
         <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px;">
           <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in randomAvatars" :key="avatar.id">
-            <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :hideBorder="true" :avatar="avatar"/>
+            <div class="pop mx-0 mb-2" style="height: 206px;">
+              <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :hideBorder="true" :avatar="avatar"/>
+            </div>
             <span class="font-weight-bold">{{avatar.name}}</span>
           </div>
         </div>

@@ -99,7 +99,7 @@ function draw(){
 
   //ctx.rotate(10)
 
-  ctx.drawImage(faceCanvas, x, y);
+  Drawing.drawSpriteSheet(ctx, faceCanvas, x - 8, y - 8, 0, 0, 80, 80, false, 0);
 
   ctx.save();
   ctx.translate(rotationY * 3, rotationX * 6);
@@ -107,31 +107,33 @@ function draw(){
   let rightEyebrowOffset = getRightEyebrowOffset();
 
   // Draw right eyebrow
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 16 - rightEyebrowOffset, 1, 0, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 16 - rightEyebrowOffset, 1, 0, 16, 16, false, 0);
 
   // Draw right eye 
   let rightEye = getRightEye();
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 23, 0, rightEye, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 23, 0, rightEye, 16, 16, false, 0);
 
   let leftEyebrowOffset = getLeftEyebrowOffset();
 
   // Draw left eyebrow
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 16 - leftEyebrowOffset, 1, 0, true, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 16 - leftEyebrowOffset, 1, 0, 16, 16, true, 0);
 
   // Draw left eye
   let leftEye = getLeftEye();
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 23, 0, leftEye, true, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 23, 0, leftEye, 16, 16, true, 0);
 
   // Draw nose
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 34, 2, 0, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 34, 2, 0, 16, 16, false, 0);
 
   // Draw mouth
   let mouth = getMouth();
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 44, 3, mouth, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 44, 3, mouth, 16, 16, false, 0);
 
   ctx.restore();
 
-  ctx.drawImage(hairCanvas, x, y - 20);
+  Drawing.drawSpriteSheet(ctx, hairCanvas, x - 8, y - 33, 2, 0, 80, 120, false, 0);
+
+  //ctx.drawImage(hairCanvas, x, y - 20);
 
   ctx.restore();
 

@@ -74,6 +74,11 @@ function onEyesColorChange(event){
   updateURL();
 }
 
+
+function onPlayPressed(event){
+  router.push({path: "play", query: {data: avatar.toBase64()}});
+}
+
 function onSavePressed(event){
   Service.saveAvatar(avatar);
 }
@@ -85,40 +90,50 @@ function onDeletePressed(event){
 </script>
 
 <template>
-  <div v-if="avatar">
-    <AvatarComponent :avatar="avatar"/>
-    <div>
+  <div v-if="avatar" class="pop m-3">
 
+    <div class="d-flex flex-row m-3">
+      <div class="pop" style="width: fit-content; height: 206px;">
+        <AvatarComponent :avatar="avatar"/>
+      </div>
+
+      <div class="pop w-100 mx-0">
+        <div>
+          <span>Background color</span>
+          <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+        </div>
+        <div>
+          <span>Skin color</span>
+          <ColorSelectorComponent :selected="avatar.colors.skin" @input="onSkinColorChange"/>
+        </div>
+        <div>
+          <span>Hair color</span>
+          <ColorSelectorComponent :selected="avatar.colors.hair" @input="onHairColorChange"/>
+        </div>
+        <div>
+          <span>Clothes color</span>
+          <ColorSelectorComponent :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
+        </div>
+        <div>
+          <span>Eyes color</span>
+          <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
+        </div>
+      </div>
     </div>
+  
     
     <div clas="d-flex flex-column">
       <div>
         <span>Name</span>
         <input type="text" :value="avatar.name" @input="onNameChange">
       </div>
-      <div>
-        <span>Background color</span>
-        <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
-      </div>
-      <div>
-        <span>Skin color</span>
-        <ColorSelectorComponent :selected="avatar.colors.skin" @input="onSkinColorChange"/>
-      </div>
-      <div>
-        <span>Hair color</span>
-        <ColorSelectorComponent :selected="avatar.colors.hair" @input="onHairColorChange"/>
-      </div>
-      <div>
-        <span>Clothes color</span>
-        <ColorSelectorComponent :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
-      </div>
-      <div>
-        <span>Eyes color</span>
-        <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
-      </div>
+     
 
-      <button class="btn btn-primary" @click="onSavePressed">Save</button>
-      <button class="btn btn-danger" @click="onDeletePressed">Delete</button>
+      <div class="w-100 d-flex flex-row justify-content-end">
+        <button class="pop button bg-primary" @click="onPlayPressed">Play</button>
+        <button class="pop button bg-primary" @click="onSavePressed">Save</button>
+        <button class="pop button bg-danger" @click="onDeletePressed">Delete</button>
+      </div>
       
     </div>
   </div>
