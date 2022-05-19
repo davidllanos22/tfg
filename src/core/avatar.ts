@@ -19,6 +19,7 @@ export const DefaultColors: AvatarColors = {
 
 export class Avatar{
   private _id: string;
+  private _version: string;
   private _name: string;
   private _shape: AvatarPart;
   private _mouth: AvatarPart;
@@ -34,6 +35,14 @@ export class Avatar{
 
   public set id(value: string) {
     this._id = value;
+  }
+
+  public get version(): string {
+    return this._version;
+  }
+
+  public set version(value: string) {
+    this._version = value;
   }
 
   public get name(): string {
@@ -104,6 +113,7 @@ export class Avatar{
     let data: any = {};
 
     data.id = this.id;
+    data.version = this.version;
     data.name = this.name;
     data.colors = this.colors;
 
@@ -139,6 +149,7 @@ export class Avatar{
     let avatar = new Avatar();
 
     avatar.id = Utils.randomId();
+    avatar.version = "1";
 
     let hair = Utils.randomRGBColor();
     let hairDark = hair.map(c=>Math.max(0, c-20));
