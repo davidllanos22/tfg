@@ -35,6 +35,12 @@ onUnmounted(() => {
   webcam.destroy();
 });
 
+function onNameChange(event){
+  let name = event.target.value;
+  avatar.name = name;
+  updateURL();
+}
+
 function onBackgroundColorChange(event){
   let color = event.target.value;
   avatar.colors.background = color;
@@ -83,6 +89,10 @@ function onSavePressed(event){
     
     <div clas="d-flex flex-column">
       <div>
+        <span>Name</span>
+        <input type="text" :value="avatar.name" @input="onNameChange">
+      </div>
+      <div>
         <span>Background color</span>
         <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
       </div>
@@ -103,7 +113,7 @@ function onSavePressed(event){
         <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
       </div>
 
-      <button @click="onSavePressed">Save</button>
+      <button class="btn btn-primary" @click="onSavePressed">Save</button>
       
     </div>
   </div>
