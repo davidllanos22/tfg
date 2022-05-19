@@ -85,6 +85,7 @@ function onSavePressed(event){
 
 function onDeletePressed(event){
   Service.deleteAvatar(avatar.id);
+  router.push({path: "list"});
 }
 
 </script>
@@ -131,7 +132,7 @@ function onDeletePressed(event){
 
       <div class="w-100 d-flex flex-row justify-content-end">
         <button class="pop button bg-primary" @click="onPlayPressed">Play</button>
-        <button class="pop button bg-primary" @click="onSavePressed">Save</button>
+        <button class="pop button bg-warning" @click="onSavePressed">Save</button>
         <button class="pop button bg-danger" @click="onDeletePressed">Delete</button>
       </div>
       

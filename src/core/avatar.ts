@@ -21,12 +21,13 @@ export class Avatar{
   private _id: string;
   private _version: string;
   private _name: string;
-  private _shape: AvatarPart;
+  private _face: AvatarPart;
   private _mouth: AvatarPart;
   private _nose: AvatarPart;
   private _eyes: AvatarPart;
   private _eyebrows: AvatarPart;
   private _hair: AvatarPart;
+  private _clothes: AvatarPart;
   private _colors: AvatarColors = {...DefaultColors};
 
   public get id(): string {
@@ -61,12 +62,12 @@ export class Avatar{
     return this._colors;
   }
 
-  public get shape(): AvatarPart {
-    return this._shape;
+  public get face(): AvatarPart {
+    return this._face;
   }
 
-  public set shape(value: AvatarPart) {
-    this._shape = value;
+  public set face(value: AvatarPart) {
+    this._face = value;
   }
 
   public get mouth(): AvatarPart {
@@ -108,6 +109,14 @@ export class Avatar{
   public set hair(value: AvatarPart) {
     this._hair = value;
   }
+
+  public get clothes(): AvatarPart {
+    return this._clothes;
+  }
+
+  public set clothes(value: AvatarPart) {
+    this._clothes = value;
+  }
   
   public toJSON(){
     let data: any = {};
@@ -116,6 +125,8 @@ export class Avatar{
     data.version = this.version;
     data.name = this.name;
     data.colors = this.colors;
+    data.hair = this.hair;
+    data.face = this.face;
 
     return JSON.stringify(data);
   }
@@ -157,6 +168,9 @@ export class Avatar{
     let skinDark = skin.map(c=>Math.max(0, c-20));
     let clothes = Utils.randomRGBColor();
     let clothesDark = clothes.map(c=>Math.max(0, c-20));
+
+    avatar.face = {image: "", index: Utils.randomInt(0, 1)};
+    avatar.hair = {image: "", index: Utils.randomInt(0, 4)};
 
     avatar.colors.background = Utils.randomHexColor();
     avatar.colors.hair = Utils.RGBtoHex(hair);

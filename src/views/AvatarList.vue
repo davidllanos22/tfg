@@ -51,7 +51,7 @@ function onAvatarClick(avatar){
       </div>
      
       <div class="d-flex flex-column">
-        <h1 class="pop p-2 mx-1 mb-3 bg-danger">Random generated avatars</h1>
+        <h1 class="pop p-2 mx-1 mb-3 bg-danger">Generated avatars</h1>
         <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px;">
           <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in randomAvatars" :key="avatar.id">
             <div class="pop mx-0 mb-2" style="height: 206px;">

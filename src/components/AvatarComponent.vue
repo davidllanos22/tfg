@@ -99,7 +99,7 @@ function draw(){
 
   //ctx.rotate(10)
 
-  Drawing.drawSpriteSheet(ctx, faceCanvas, x - 8, y - 8, 0, 0, 80, 80, false, 0);
+  Drawing.drawSpriteSheet(ctx, faceCanvas, x - 8, y - 8, props.avatar.face.index, 0, 80, 80, false, 0);
 
   ctx.save();
   ctx.translate(rotationY * 3, rotationX * 6);
@@ -131,7 +131,7 @@ function draw(){
 
   ctx.restore();
 
-  Drawing.drawSpriteSheet(ctx, hairCanvas, x - 8, y - 33, 2, 0, 80, 120, false, 0);
+  Drawing.drawSpriteSheet(ctx, hairCanvas, x - 8, y - 33, props.avatar.hair.index, 0, 80, 120, false, 0);
 
   //ctx.drawImage(hairCanvas, x, y - 20);
 

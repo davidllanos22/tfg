@@ -3,6 +3,8 @@
   --bs-primary-rgb: 109, 234, 239;
   --bs-danger: #f456ab;
   --bs-danger-rgb: 244, 86, 171;
+  --bs-warning: #faf61b;
+  --bs-warning: 250, 246, 27;
 }
 
 .cursor-pointer{

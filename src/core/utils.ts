@@ -25,4 +25,8 @@ export abstract class Utils{
   static randomId(){
     return "" + Math.random().toString(36).substr(2, 9);
   }
+
+  static randomInt(from: number, to: number){
+    return Math.floor(Math.random() * (to + 1) + from);
+  }
 }
