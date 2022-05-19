@@ -28,4 +28,12 @@ export abstract class Service{
       resolve(id);
     });
   }
+
+  static deleteAvatar(id: string): Promise<boolean>{
+    console.log(id)
+    return new Promise((resolve: any, reject: any)=>{
+      localStorage.removeItem("avatar_" + id);
+      resolve(true);
+    });
+  }
 }

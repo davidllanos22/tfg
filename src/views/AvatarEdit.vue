@@ -78,6 +78,10 @@ function onSavePressed(event){
   Service.saveAvatar(avatar);
 }
 
+function onDeletePressed(event){
+  Service.deleteAvatar(avatar.id);
+}
+
 </script>
 
 <template>
@@ -114,6 +118,7 @@ function onSavePressed(event){
       </div>
 
       <button class="btn btn-primary" @click="onSavePressed">Save</button>
+      <button class="btn btn-danger" @click="onDeletePressed">Delete</button>
       
     </div>
   </div>
