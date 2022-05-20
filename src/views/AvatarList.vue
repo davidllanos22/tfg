@@ -8,7 +8,7 @@ import router from "@/router";
 let customAvatars = ref([]);
 let randomAvatars = ref([]);
 
-for(let i = 0; i < 50; i++){
+for(let i = 0; i < 20; i++){
   let avatar = Avatar.random();
   avatar.name = i;
   randomAvatars.value.push(avatar);

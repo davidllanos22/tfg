@@ -11,9 +11,10 @@ import router from "@/router";
 let settings = inject("settings");
 
 let data = router.currentRoute.value.query.data;
-let avatar = Avatar.fromBase64(data);
-if(avatar == null) router.push("/list");
+let avatarData = Avatar.fromBase64(data);
+if(avatarData == null) router.push("/list");
 
+let avatar = ref(avatarData)
 let landmarks = ref([]);
 let webcamImage = ref(null);
 let webcam;
@@ -24,8 +25,7 @@ function onResults(results){
 }
 
 function updateURL(){
-  console.log(avatar);
-  router.replace({query: {data: avatar.toBase64()}});
+  router.replace({query: {data: avatar.value.toBase64()}});
 }
 
 onMounted(() => {
@@ -39,59 +39,71 @@ onUnmounted(() => {
 
 function onNameChange(event){
   let name = event.target.value;
-  avatar.name = name;
+  avatar.value.name = name;
   updateURL();
 }
 
 function onBackgroundColorChange(event){
   let color = event.target.value;
-  avatar.colors.background = color;
+  avatar.value.colors.background = color;
   updateURL();
 }
 
 function onSkinColorChange(event){
   let color = event.target.value;
-  avatar.colors.skin = color;
-  avatar.colors.skinDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
+  avatar.value.colors.skin = color;
+  avatar.value.colors.skinDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
   updateURL();
 }
 
 function onHairColorChange(event){
   let color = event.target.value;
   console.log(Utils);
-  avatar.colors.hair = color;
-  avatar.colors.hairDark = color;
-  avatar.colors.hairDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
+  avatar.value.colors.hair = color;
+  avatar.value.colors.hairDark = color;
+  avatar.value.colors.hairDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
   updateURL();
 }
 
 function onClothesColorChange(event){
   let color = event.target.value;
-  avatar.colors.clothes = color;
-  avatar.colors.clothesDark = color;
-  avatar.colors.clothesDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
+  avatar.value.colors.clothes = color;
+  avatar.value.colors.clothesDark = color;
+  avatar.value.colors.clothesDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
   updateURL();
 }
 
 function onEyesColorChange(event){
   let color = event.target.value;
-  avatar.colors.eyes = color;
+  avatar.value.colors.eyes = color;
   
   updateURL();
 }
 
 
 function onPlayPressed(event){
-  router.push({path: "play", query: {data: avatar.toBase64()}});
+  router.push({path: "play", query: {data: avatar.value.toBase64()}});
 }
 
 function onSavePressed(event){
-  Service.saveAvatar(avatar);
+  Service.saveAvatar(avatar.value);
 }
 
 function onDeletePressed(event){
-  Service.deleteAvatar(avatar.id);
+  Service.deleteAvatar(avatar.value.id);
   router.push({path: "list"});
+}
+
+function onNextPartPressed(part){
+  if(!avatar.value[part]) return;
+  avatar.value[part].index++;
+  console.log("onNextPartPressed", part);
+}
+
+function onPreviousPartPressed(part){
+  if(!avatar.value[part]) return;
+  avatar.value[part].index--;
+  console.log("onPreviousPartPressed", part);
 }
 
 </script>
@@ -104,27 +116,52 @@ function onDeletePressed(event){
           <AvatarComponent :avatar="avatar"/>
         </div>
 
-        <div class="pop w-100 mx-0">
-          <div>
-            <span>Background color</span>
-            <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+        <div class="pop w-100 mx-0 p-2 d-flex flex-row">
+          <div class="w-50 d-flex flex-column" style="gap: 10px">
+            <div class="d-flex flex-row align-items-center">
+              <span>Background color</span>
+              <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+              <span>Skin color</span>
+              <ColorSelectorComponent :selected="avatar.colors.skin" @input="onSkinColorChange"/>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+              <span>Hair color</span>
+              <ColorSelectorComponent :selected="avatar.colors.hair" @input="onHairColorChange"/>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+              <span>Clothes color</span>
+              <ColorSelectorComponent :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+              <span>Eyes color</span>
+              <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
+            </div>
           </div>
-          <div>
-            <span>Skin color</span>
-            <ColorSelectorComponent :selected="avatar.colors.skin" @input="onSkinColorChange"/>
+
+          <div class="w-50 d-flex flex-column" style="gap: 10px">
+
+            <div class="d-flex flex-row align-items-center">
+              <span>Face</span>
+              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('face')"></div>
+              <span>{{avatar.face.index + 1}}</span>
+              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('face')"></div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center">
+              <span>Hair</span>
+              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('hair')"></div>
+              <span>{{avatar.hair.index + 1}}</span>
+              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('hair')"></div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center">
+              <span>Hair</span>
+              <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+            </div>
           </div>
-          <div>
-            <span>Hair color</span>
-            <ColorSelectorComponent :selected="avatar.colors.hair" @input="onHairColorChange"/>
-          </div>
-          <div>
-            <span>Clothes color</span>
-            <ColorSelectorComponent :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
-          </div>
-          <div>
-            <span>Eyes color</span>
-            <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
-          </div>
+
         </div>
       </div>
     
