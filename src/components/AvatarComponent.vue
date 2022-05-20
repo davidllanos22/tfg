@@ -14,7 +14,7 @@ let props = defineProps({
 });
 
 let faceCanvas; 
-let bodyCanvas; 
+let clothesCanvas; 
 let hairCanvas; 
 let partsCanvas;
 
@@ -24,7 +24,7 @@ function updateColors(){
   });
 
   Drawing.createImageCanvas("face.png", replaceColors, (cvs)=>faceCanvas = cvs);
-  Drawing.createImageCanvas("body.png", replaceColors, (cvs)=>bodyCanvas = cvs);
+  Drawing.createImageCanvas("clothes.png", replaceColors, (cvs)=>clothesCanvas = cvs);
   Drawing.createImageCanvas("hair.png", replaceColors, (cvs)=>hairCanvas = cvs);
   Drawing.createImageCanvas("parts.png", replaceColors, (cvs)=>partsCanvas = cvs);
 }
@@ -61,7 +61,7 @@ function draw(){
 
   Drawing.clearCanvas(ctx, cvs.width, cvs.height, props.avatar.colors.background || "#26282B");
 
-  if(!faceCanvas || !bodyCanvas || !hairCanvas || !partsCanvas){
+  if(!faceCanvas || !clothesCanvas || !hairCanvas || !partsCanvas){
     requestAnimationFrame(draw.bind(this));
     return;
   }
@@ -88,7 +88,7 @@ function draw(){
   ctx.translate(centerX , centerY);
   ctx.scale(3, 3);
 
-  ctx.drawImage(bodyCanvas, x - 7, y + 56);
+  Drawing.drawSpriteSheet(ctx, clothesCanvas, x - 7, y + 56, props.avatar.clothes.index, 0, 80, 36, false, 0);
 
   ctx.restore();
   
@@ -107,27 +107,27 @@ function draw(){
   let rightEyebrowOffset = getRightEyebrowOffset();
 
   // Draw right eyebrow
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 16 - rightEyebrowOffset, 1, 0, 16, 16, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 16 - rightEyebrowOffset, props.avatar.eyebrows.index, 0, 16, 16, false, 0);
 
   // Draw right eye 
   let rightEye = getRightEye();
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 23, 0, rightEye, 16, 16, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 12, y + 23, props.avatar.eyes.index, rightEye, 16, 16, false, 0);
 
   let leftEyebrowOffset = getLeftEyebrowOffset();
 
   // Draw left eyebrow
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 16 - leftEyebrowOffset, 1, 0, 16, 16, true, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 16 - leftEyebrowOffset, props.avatar.eyebrows.index, 0, 16, 16, true, 0);
 
   // Draw left eye
   let leftEye = getLeftEye();
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 23, 0, leftEye, 16, 16, true, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 52, y + 23, props.avatar.eyes.index, leftEye, 16, 16, true, 0);
 
   // Draw nose
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 34, 2, 0, 16, 16, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 34, props.avatar.nose.index, 1, 16, 16, false, 0);
 
   // Draw mouth
   let mouth = getMouth();
-  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 44, 3, mouth, 16, 16, false, 0);
+  Drawing.drawSpriteSheet(ctx, partsCanvas, x + 24, y + 44, props.avatar.mouth.index, mouth, 16, 16, false, 0);
 
   ctx.restore();
 
@@ -209,34 +209,30 @@ function getLeftEyebrowOffset(){
   return Math.max(0, distance * 100 - 5);
 }
 
-function isRightEyeClosed(){
-  
-}
-
 function getLeftEye(){
   let leftEyeTop = getLandmark(387);
   let leftEyeBottom = getLandmark(373);
 
-  if(leftEyeTop == null || leftEyeBottom == null) return 2;
+  if(leftEyeTop == null || leftEyeBottom == null) return 4;
 
   let leftEyeDistance = MathUtils.distance(leftEyeTop, leftEyeBottom);
 
-  if(leftEyeDistance < 0.01) return 0;
-  else if(leftEyeDistance < 0.02) return 1;
-  else return 2;
+  if(leftEyeDistance < 0.01) return 2;
+  else if(leftEyeDistance < 0.02) return 3;
+  else return 4;
 }
 
 function getRightEye(){
   let rightEyeTop = getLandmark(160);
   let rightEyeBottom = getLandmark(144);
 
-  if(rightEyeTop == null || rightEyeBottom == null) return 2;
+  if(rightEyeTop == null || rightEyeBottom == null) return 4;
 
   let rightEyeDistance = MathUtils.distance(rightEyeTop, rightEyeBottom);
 
-  if(rightEyeDistance < 0.01) return 0;
-  else if(rightEyeDistance < 0.02) return 1;
-  else return 2;
+  if(rightEyeDistance < 0.01) return 2;
+  else if(rightEyeDistance < 0.02) return 3;
+  else return 4;
 }
 
 function getMouth(){
@@ -245,15 +241,15 @@ function getMouth(){
   let mouthRight = getLandmark(61);
   let mouthBottom = getLandmark(17);
 
-  if(mouthTop == null || mouthLeft == null || mouthRight == null || mouthBottom == null) return 0;
+  if(mouthTop == null || mouthLeft == null || mouthRight == null || mouthBottom == null) return 5;
 
   let mouthDistance = MathUtils.distance(mouthTop, mouthBottom);
 
   // TODO: mirar apertura horizontal
   // TODO: mirar apertura vertical
-  if(mouthDistance < 0.1) return 0;
-  else if(mouthDistance < 0.15) return 1;
-  else return 2;
+  if(mouthDistance < 0.1) return 5;
+  else if(mouthDistance < 0.15) return 6;
+  else return 7;
 }
 
 </script>

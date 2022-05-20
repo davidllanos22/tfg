@@ -8,9 +8,9 @@ export abstract class Settings{
   constructor(){
     (window as any).settings = this;
     
-    const gui = new GUI();
-    gui.close();
-    gui.add(this, "mirrorEnabled");
-    gui.add(this, "debugEnabled");
+    // const gui = new GUI();
+    // gui.close();
+    // gui.add(this, "mirrorEnabled");
+    // gui.add(this, "debugEnabled");
   }
 }

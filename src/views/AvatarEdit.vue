@@ -1,7 +1,7 @@
 <script setup>
 import AvatarComponent from "@/components/AvatarComponent.vue";
 import ColorSelectorComponent from "@/components/ColorSelectorComponent.vue";
-import { Avatar } from "@/core/avatar";
+import { Avatar, AvatarPartsCount } from "@/core/avatar";
 import { Utils } from "@/core/utils";
 import { Service } from "@/core/service";
 import { Webcam } from "@/core/webcam";
@@ -97,13 +97,13 @@ function onDeletePressed(event){
 function onNextPartPressed(part){
   if(!avatar.value[part]) return;
   avatar.value[part].index++;
-  console.log("onNextPartPressed", part);
+  if(avatar.value[part].index > AvatarPartsCount[part] - 1) avatar.value[part].index = 0;
 }
 
 function onPreviousPartPressed(part){
   if(!avatar.value[part]) return;
   avatar.value[part].index--;
-  console.log("onPreviousPartPressed", part);
+  if(avatar.value[part].index < 0) avatar.value[part].index = AvatarPartsCount[part] - 1;
 }
 
 </script>
@@ -157,9 +157,34 @@ function onPreviousPartPressed(part){
             </div>
 
             <div class="d-flex flex-row align-items-center">
-              <span>Hair</span>
-              <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+              <span>Eyebrows</span>
+              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('eyebrows')"></div>
+              <span>{{avatar.eyebrows.index + 1}}</span>
+              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('eyebrows')"></div>
             </div>
+
+            <div class="d-flex flex-row align-items-center">
+              <span>Nose</span>
+              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('nose')"></div>
+              <span>{{avatar.nose.index + 1}}</span>
+              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('nose')"></div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center">
+              <span>Eyes</span>
+              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('eyes')"></div>
+              <span>{{avatar.eyes.index + 1}}</span>
+              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('eyes')"></div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center">
+              <span>Clothes</span>
+              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('clothes')"></div>
+              <span>{{avatar.clothes.index + 1}}</span>
+              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('clothes')"></div>
+            </div>
+
+            
           </div>
 
         </div>

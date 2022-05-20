@@ -16,6 +16,16 @@ export const DefaultColors: AvatarColors = {
   eyes: "#663931"
 }
 
+export const AvatarPartsCount = {
+  face: 2,
+  mouth: 1,
+  nose: 3,
+  eyes: 1,
+  eyebrows: 4,
+  hair: 5,
+  clothes: 4
+}
+
 
 export class Avatar{
   private _id: string;
@@ -127,6 +137,11 @@ export class Avatar{
     data.colors = this.colors;
     data.hair = this.hair;
     data.face = this.face;
+    data.eyes = this.eyes;
+    data.eyebrows = this.eyebrows;
+    data.nose = this.nose;
+    data.mouth = this.mouth;
+    data.clothes = this.clothes;
 
     return JSON.stringify(data);
   }
@@ -169,8 +184,13 @@ export class Avatar{
     let clothes = Utils.randomRGBColor();
     let clothesDark = clothes.map(c=>Math.max(0, c-20));
 
-    avatar.face = {image: "", index: Utils.randomInt(0, 1)};
-    avatar.hair = {image: "", index: Utils.randomInt(0, 4)};
+    avatar.face = {image: "", index: Utils.randomInt(0, AvatarPartsCount.face - 1)};
+    avatar.hair = {image: "", index: Utils.randomInt(0, AvatarPartsCount.hair - 1)};
+    avatar.eyes = {image: "", index: Utils.randomInt(0, AvatarPartsCount.eyes - 1)};
+    avatar.eyebrows = {image: "", index: Utils.randomInt(0, AvatarPartsCount.eyebrows - 1)};
+    avatar.nose = {image: "", index: Utils.randomInt(0, AvatarPartsCount.nose - 1)};
+    avatar.mouth = {image: "", index: Utils.randomInt(0, AvatarPartsCount.mouth - 1)};
+    avatar.clothes = {image: "", index: Utils.randomInt(0, AvatarPartsCount.clothes - 1)};
 
     avatar.colors.background = Utils.randomHexColor();
     avatar.colors.hair = Utils.RGBtoHex(hair);
