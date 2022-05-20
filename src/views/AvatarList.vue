@@ -57,7 +57,7 @@ function onAvatarClick(avatar){
             <div class="pop mx-0 mb-2" style="height: 206px;">
               <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :hideBorder="true" :avatar="avatar"/>
             </div>
-            <span class="font-weight-bold">{{avatar.name}}</span>
+            <span class="font-weight-bold text-black">{{avatar.name}}</span>
           </div>
         </div>
       </div>

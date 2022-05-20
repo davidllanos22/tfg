@@ -2,6 +2,7 @@
 import AvatarComponent from "@/components/AvatarComponent.vue";
 import ColorSelectorComponent from "@/components/ColorSelectorComponent.vue";
 import { Avatar } from "@/core/avatar";
+import { Utils } from "@/core/utils";
 import { Service } from "@/core/service";
 import { Webcam } from "@/core/webcam";
 import { ref, onMounted, onUnmounted, inject  } from 'vue';
@@ -23,6 +24,7 @@ function onResults(results){
 }
 
 function updateURL(){
+  console.log(avatar);
   router.replace({query: {data: avatar.toBase64()}});
 }
 
@@ -50,27 +52,31 @@ function onBackgroundColorChange(event){
 function onSkinColorChange(event){
   let color = event.target.value;
   avatar.colors.skin = color;
-  //TODO: actualizar color oscuro
+  avatar.colors.skinDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
   updateURL();
 }
 
 function onHairColorChange(event){
   let color = event.target.value;
+  console.log(Utils);
   avatar.colors.hair = color;
-  //TODO: actualizar color oscuro
+  avatar.colors.hairDark = color;
+  avatar.colors.hairDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
   updateURL();
 }
 
 function onClothesColorChange(event){
   let color = event.target.value;
   avatar.colors.clothes = color;
-  //TODO: actualizar color oscuro
+  avatar.colors.clothesDark = color;
+  avatar.colors.clothesDark = Utils.RGBtoHex(Utils.hexToRGB(color).map(c=>Math.max(0, c-20)));
   updateURL();
 }
 
 function onEyesColorChange(event){
   let color = event.target.value;
   avatar.colors.eyes = color;
+  
   updateURL();
 }
 
@@ -91,51 +97,52 @@ function onDeletePressed(event){
 </script>
 
 <template>
-  <div v-if="avatar" class="pop m-3">
+  <div v-if="avatar" class="d-flex flex-row justify-content-center m-3" >
+    <div class="pop w-100" style="max-width: 900px;">
+      <div class="d-flex flex-row m-3">
+        <div class="pop" style="width: fit-content; height: 206px;">
+          <AvatarComponent :avatar="avatar"/>
+        </div>
 
-    <div class="d-flex flex-row m-3">
-      <div class="pop" style="width: fit-content; height: 206px;">
-        <AvatarComponent :avatar="avatar"/>
-      </div>
-
-      <div class="pop w-100 mx-0">
-        <div>
-          <span>Background color</span>
-          <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
-        </div>
-        <div>
-          <span>Skin color</span>
-          <ColorSelectorComponent :selected="avatar.colors.skin" @input="onSkinColorChange"/>
-        </div>
-        <div>
-          <span>Hair color</span>
-          <ColorSelectorComponent :selected="avatar.colors.hair" @input="onHairColorChange"/>
-        </div>
-        <div>
-          <span>Clothes color</span>
-          <ColorSelectorComponent :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
-        </div>
-        <div>
-          <span>Eyes color</span>
-          <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
+        <div class="pop w-100 mx-0">
+          <div>
+            <span>Background color</span>
+            <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+          </div>
+          <div>
+            <span>Skin color</span>
+            <ColorSelectorComponent :selected="avatar.colors.skin" @input="onSkinColorChange"/>
+          </div>
+          <div>
+            <span>Hair color</span>
+            <ColorSelectorComponent :selected="avatar.colors.hair" @input="onHairColorChange"/>
+          </div>
+          <div>
+            <span>Clothes color</span>
+            <ColorSelectorComponent :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
+          </div>
+          <div>
+            <span>Eyes color</span>
+            <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
+          </div>
         </div>
       </div>
-    </div>
-  
     
-    <div clas="d-flex flex-column">
-      <div>
-        <span>Name</span>
-        <input type="text" :value="avatar.name" @input="onNameChange">
-      </div>
-     
-
-      <div class="w-100 d-flex flex-row justify-content-end">
-        <button class="pop button bg-primary" @click="onPlayPressed">Play</button>
-        <button class="pop button bg-warning" @click="onSavePressed">Save</button>
-        <button class="pop button bg-danger" @click="onDeletePressed">Delete</button>
-      </div>
+      <div clas="d-flex flex-column">
+        <div>
+          <span>Name</span>
+          <input type="text" :value="avatar.name" @input="onNameChange">
+        </div>
       
+
+        <div class="w-100 d-flex flex-row justify-content-end">
+          <button class="pop button bg-primary" @click="onPlayPressed">Play</button>
+          <button class="pop button bg-warning" @click="onSavePressed">Save</button>
+          <button class="pop button bg-danger" @click="onDeletePressed">Delete</button>
+        </div>
+        
+      </div>
     </div>
+    
   </div>
 </template>

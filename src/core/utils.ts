@@ -3,6 +3,16 @@ export abstract class Utils{
     return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1]  << 8) + rgb[2] ).toString(16).slice(1);
   }
 
+  static hexToRGB(hex: string) {
+    let array = hex.replace("#", "").match(/.{1,2}/g);
+
+    return [
+      parseInt(array[0], 16),
+      parseInt(array[1], 16),
+      parseInt(array[2], 16)
+    ];
+  }
+
   static randomRGBColor(){
     let rgb = [];
 

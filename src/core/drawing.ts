@@ -39,20 +39,10 @@ export abstract class Drawing{
     ctx.fillText(text, x, y);
   }
 
-  static hexToRGB(hex: string) {
-    let array = hex.replace("#", "").match(/.{1,2}/g);
-
-    return [
-      parseInt(array[0], 16),
-      parseInt(array[1], 16),
-      parseInt(array[2], 16)
-    ];
-  }
-
   static replaceCanvasColor(cvs: any, ctx: any, from: any, to: any){
     let imageData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-    let fromRGB = Drawing.hexToRGB(from);
-    let toRGB = Drawing.hexToRGB(to);
+    let fromRGB = Utils.hexToRGB(from);
+    let toRGB = Utils.hexToRGB(to);
   
     for (let i = 0; i < imageData.data.length; i += 4){
       let pixelRGB = [imageData.data[i], imageData.data[i+1], imageData.data[i+2]];
