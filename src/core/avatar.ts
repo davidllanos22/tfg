@@ -40,6 +40,8 @@ export class Avatar{
   private _clothes: AvatarPart;
   private _colors: AvatarColors = {...DefaultColors};
 
+  private _updateDate: string;
+
   public get id(): string {
     return this._id;
   }
@@ -128,6 +130,14 @@ export class Avatar{
     this._clothes = value;
   }
   
+  public get updateDate(): string {
+    return this._updateDate;
+  }
+
+  public set updateDate(value: string) {
+    this._updateDate = value;
+  }
+
   public toJSON(){
     let data: any = {};
 
@@ -142,6 +152,8 @@ export class Avatar{
     data.nose = this.nose;
     data.mouth = this.mouth;
     data.clothes = this.clothes;
+    
+    if(this.updateDate) data.updateDate = this.updateDate;
 
     return JSON.stringify(data);
   }

@@ -23,6 +23,7 @@ export abstract class Service{
   static saveAvatar(avatar: Avatar): Promise<String>{
     return new Promise((resolve: any, reject: any)=>{
       let id = "avatar_" + avatar.id;
+      avatar.updateDate = new Date().toISOString();
       localStorage.setItem(id, avatar.toBase64());
 
       resolve(id);

@@ -10,7 +10,7 @@ let randomAvatars = ref([]);
 
 for(let i = 0; i < 20; i++){
   let avatar = Avatar.random();
-  avatar.name = i;
+  avatar.name = i + 1;
   randomAvatars.value.push(avatar);
 }
 

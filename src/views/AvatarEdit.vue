@@ -14,6 +14,8 @@ let data = router.currentRoute.value.query.data;
 let avatarData = Avatar.fromBase64(data);
 if(avatarData == null) router.push("/list");
 
+console.log(avatarData)
+
 let avatar = ref(avatarData)
 let landmarks = ref([]);
 let webcamImage = ref(null);
@@ -200,7 +202,7 @@ function onPreviousPartPressed(part){
         <div class="w-100 d-flex flex-row justify-content-end">
           <button class="pop button bg-primary" @click="onPlayPressed">Play</button>
           <button class="pop button bg-warning" @click="onSavePressed">Save</button>
-          <button class="pop button bg-danger" @click="onDeletePressed">Delete</button>
+          <button v-if="avatar.updateDate" class="pop button bg-danger" @click="onDeletePressed">Delete</button>
         </div>
         
       </div>
