@@ -10,7 +10,7 @@ let props = defineProps({
   avatar: Avatar,
   landmarks: null,
   static: Boolean,
-  hideBorder: Boolean
+  edit: Boolean
 });
 
 let faceCanvas; 
@@ -40,7 +40,6 @@ onUnmounted(() => {
 });
 
 function draw(){
-  //updateColors();
   let cvs = document.querySelector(".cvs-" + props.avatar.id);
 
   if(!cvs) return;
@@ -50,17 +49,14 @@ function draw(){
     cvs.style.height = "200px";
   }
 
-  // if(!props.hideBorder){
-  //   let w = parseInt(cvs.style.width.replace("px", ""))
-  //   cvs.style.borderRadius = (w / 2) + "px";
-  // }
-
   let ctx = cvs.getContext('2d');
 
   ctx.save();
   ctx.imageSmoothingEnabled = false;
 
   Drawing.clearCanvas(ctx, cvs.width, cvs.height, props.avatar.colors.background || "#26282B");
+
+  if(props.edit) updateColors();
 
   if(!faceCanvas || !clothesCanvas || !hairCanvas || !partsCanvas){
     requestAnimationFrame(draw.bind(this));

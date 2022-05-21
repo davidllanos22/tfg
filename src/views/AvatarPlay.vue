@@ -40,7 +40,7 @@ function onEditPressed(){
   <!-- <div class="d-flex flex-column align-items-center h-100" :style="{'background-color': avatar.backgroundColor}"> -->
   <div class="d-flex flex-column align-items-center h-100" v-if="avatar">
     <h1>{{avatar.name}}</h1>
-    <AvatarComponent style="width: 500px" :hideBorder="true" :avatar="avatar" :landmarks="landmarks"/>
+    <AvatarComponent style="width: 500px" :avatar="avatar" :landmarks="landmarks"/>
     
     <div class="position-fixed" style="bottom: 0; right: 0;">
       <span @click="onEditPressed">Edit</span>

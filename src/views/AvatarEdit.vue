@@ -1,6 +1,7 @@
 <script setup>
 import AvatarComponent from "@/components/AvatarComponent.vue";
 import ColorSelectorComponent from "@/components/ColorSelectorComponent.vue";
+import AvatarPartSelectorComponent from "@/components/AvatarPartSelectorComponent.vue";
 import { Avatar, AvatarPartsCount } from "@/core/avatar";
 import { Utils } from "@/core/utils";
 import { Service } from "@/core/service";
@@ -115,78 +116,25 @@ function onPreviousPartPressed(part){
     <div class="pop w-100" style="max-width: 900px;">
       <div class="d-flex flex-row m-3">
         <div class="pop" style="width: fit-content; height: 206px;">
-          <AvatarComponent :avatar="avatar"/>
+          <AvatarComponent :avatar="avatar" :edit="true"/>
         </div>
 
         <div class="pop w-100 mx-0 p-2 d-flex flex-row">
           <div class="w-50 d-flex flex-column" style="gap: 10px">
-            <div class="d-flex flex-row align-items-center">
-              <span>Background color</span>
-              <ColorSelectorComponent :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
-            </div>
-            <div class="d-flex flex-row align-items-center">
-              <span>Skin color</span>
-              <ColorSelectorComponent :selected="avatar.colors.skin" @input="onSkinColorChange"/>
-            </div>
-            <div class="d-flex flex-row align-items-center">
-              <span>Hair color</span>
-              <ColorSelectorComponent :selected="avatar.colors.hair" @input="onHairColorChange"/>
-            </div>
-            <div class="d-flex flex-row align-items-center">
-              <span>Clothes color</span>
-              <ColorSelectorComponent :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
-            </div>
-            <div class="d-flex flex-row align-items-center">
-              <span>Eyes color</span>
-              <ColorSelectorComponent :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
-            </div>
+            <ColorSelectorComponent :name="'Background'" :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+            <ColorSelectorComponent :name="'Skin'" :selected="avatar.colors.skin" @input="onSkinColorChange"/>
+            <ColorSelectorComponent :name="'Hair'" :selected="avatar.colors.hair" @input="onHairColorChange"/>
+            <ColorSelectorComponent :name="'Clothes'" :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
+            <ColorSelectorComponent :name="'Eyes'" :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
           </div>
 
           <div class="w-50 d-flex flex-column" style="gap: 10px">
-
-            <div class="d-flex flex-row align-items-center">
-              <span>Face</span>
-              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('face')"></div>
-              <span>{{avatar.face.index + 1}}</span>
-              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('face')"></div>
-            </div>
-
-            <div class="d-flex flex-row align-items-center">
-              <span>Hair</span>
-              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('hair')"></div>
-              <span>{{avatar.hair.index + 1}}</span>
-              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('hair')"></div>
-            </div>
-
-            <div class="d-flex flex-row align-items-center">
-              <span>Eyebrows</span>
-              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('eyebrows')"></div>
-              <span>{{avatar.eyebrows.index + 1}}</span>
-              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('eyebrows')"></div>
-            </div>
-
-            <div class="d-flex flex-row align-items-center">
-              <span>Nose</span>
-              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('nose')"></div>
-              <span>{{avatar.nose.index + 1}}</span>
-              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('nose')"></div>
-            </div>
-
-            <div class="d-flex flex-row align-items-center">
-              <span>Eyes</span>
-              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('eyes')"></div>
-              <span>{{avatar.eyes.index + 1}}</span>
-              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('eyes')"></div>
-            </div>
-
-            <div class="d-flex flex-row align-items-center">
-              <span>Clothes</span>
-              <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed('clothes')"></div>
-              <span>{{avatar.clothes.index + 1}}</span>
-              <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed('clothes')"></div>
-            </div>
-
-            
+            <AvatarPartSelectorComponent :name="'Face'" :avatar="avatar" :part="'face'" @change="updateURL()"/>
+            <AvatarPartSelectorComponent :name="'Hair'" :avatar="avatar" :part="'hair'" @change="updateURL()"/>
+            <AvatarPartSelectorComponent :name="'Eyebrows'" :avatar="avatar" :part="'eyebrows'" @change="updateURL()"/>
+            <AvatarPartSelectorComponent :name="'Nose'" :avatar="avatar" :part="'nose'" @change="updateURL()"/>
+            <AvatarPartSelectorComponent :name="'Eyes'" :avatar="avatar" :part="'eyes'" @change="updateURL()"/>
+            <AvatarPartSelectorComponent :name="'Clothes'" :avatar="avatar" :part="'clothes'" @change="updateURL()"/>
           </div>
 
         </div>

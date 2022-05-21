@@ -42,7 +42,7 @@ function onAvatarClick(avatar){
         <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px;">
           <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in customAvatars" :key="avatar.id">
             <div class="pop mx-0 mb-2" style="height: 206px;">
-              <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :hideBorder="true" :avatar="avatar"/>
+              <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :avatar="avatar"/>
             </div>
             <span class="font-weight-bold">{{avatar.name}}</span>
           </div>
@@ -55,7 +55,7 @@ function onAvatarClick(avatar){
         <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px;">
           <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in randomAvatars" :key="avatar.id">
             <div class="pop mx-0 mb-2" style="height: 206px;">
-              <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :hideBorder="true" :avatar="avatar"/>
+              <AvatarComponent @click="onAvatarClick(avatar)" :static="true" :avatar="avatar"/>
             </div>
             <span class="font-weight-bold text-black">{{avatar.name}}</span>
           </div>

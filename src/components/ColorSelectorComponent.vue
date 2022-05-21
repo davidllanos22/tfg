@@ -2,11 +2,15 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 let props = defineProps({
+  name: String,
   selected: String,
 });
 
 </script>
 
 <template>
-  <input :value="props.selected" type="color">
+  <div class="d-flex flex-row align-items-center" style="gap: 10px;">
+    <span>{{props.name}}</span>
+    <input :value="props.selected" type="color">
+  </div>
 </template>
