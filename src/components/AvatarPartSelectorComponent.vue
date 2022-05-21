@@ -26,10 +26,10 @@ function onPreviousPartPressed(){
 
 <template>
   <div class="d-flex flex-row align-items-center">
-    <span>{{props.name}}</span>
-    <div class="arrow-left mx-2 cursor-pointer" @click="onPreviousPartPressed(); $emit('change');"></div>
+    <div class="arrow-left mx-2 cursor-pointer" style="margin-left: 0 !important;" @click="onPreviousPartPressed(); $emit('change');"></div>
     <span>{{props.avatar[props.part].index + 1}}</span>
     <div class="arrow-right mx-2 cursor-pointer" @click="onNextPartPressed(); $emit('change');"></div>
+    <span>{{props.name}}</span>
   </div>
 </template>
 

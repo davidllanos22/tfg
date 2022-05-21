@@ -37,7 +37,7 @@ function onAvatarClick(avatar){
   <div class="w-100 d-flex flex-column align-items-center">
     <div class="w-100 d-flex flex-column flex-wrap justify-content-around" style="gap: 10px; max-width: 900px;">
       
-      <div v-if="customAvatars.length > 0" class="d-flex flex-column">
+      <div v-if="customAvatars.length > 0" class="d-flex flex-column mx-2">
         <h1 class="pop p-2 mx-1 mb-3 bg-primary">My avatars</h1>
         <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px;">
           <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in customAvatars" :key="avatar.id">
@@ -50,7 +50,7 @@ function onAvatarClick(avatar){
        
       </div>
      
-      <div class="d-flex flex-column">
+      <div class="d-flex flex-column mx-2">
         <h1 class="pop p-2 mx-1 mb-3 bg-danger">Generated avatars</h1>
         <div class="w-100 d-flex flex-row flex-wrap justify-content-around" style="gap: 10px;">
           <div class="d-flex flex-column align-items-center cursor-pointer" v-for="avatar in randomAvatars" :key="avatar.id">

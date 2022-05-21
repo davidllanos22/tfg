@@ -114,37 +114,46 @@ function onPreviousPartPressed(part){
 <template>
   <div v-if="avatar" class="d-flex flex-row justify-content-center m-3" >
     <div class="pop w-100" style="max-width: 900px;">
-      <div class="d-flex flex-row m-3">
-        <div class="pop" style="width: fit-content; height: 206px;">
-          <AvatarComponent :avatar="avatar" :edit="true"/>
+      <div class="d-flex align-items-center flex-md-row flex-column m-3">
+        <div class="pop" style="width: fit-content; height: 306px;">
+          <AvatarComponent style="width: 300px" :avatar="avatar" :edit="true"/>
         </div>
 
-        <div class="pop w-100 mx-0 p-2 d-flex flex-row">
-          <div class="w-50 d-flex flex-column" style="gap: 10px">
-            <ColorSelectorComponent :name="'Background'" :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
-            <ColorSelectorComponent :name="'Skin'" :selected="avatar.colors.skin" @input="onSkinColorChange"/>
-            <ColorSelectorComponent :name="'Hair'" :selected="avatar.colors.hair" @input="onHairColorChange"/>
-            <ColorSelectorComponent :name="'Clothes'" :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
-            <ColorSelectorComponent :name="'Eyes'" :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
+        <div class="pop w-100 mx-0 p-2 d-flex flex-column" style="height: 306px;">
+          
+          <div class="d-flex flex-row align-items-center" style="gap: 10px;">
+            <span>Name</span>
+            <input type="text" :value="avatar.name" @input="onNameChange">
           </div>
 
-          <div class="w-50 d-flex flex-column" style="gap: 10px">
-            <AvatarPartSelectorComponent :name="'Face'" :avatar="avatar" :part="'face'" @change="updateURL()"/>
-            <AvatarPartSelectorComponent :name="'Hair'" :avatar="avatar" :part="'hair'" @change="updateURL()"/>
-            <AvatarPartSelectorComponent :name="'Eyebrows'" :avatar="avatar" :part="'eyebrows'" @change="updateURL()"/>
-            <AvatarPartSelectorComponent :name="'Nose'" :avatar="avatar" :part="'nose'" @change="updateURL()"/>
-            <AvatarPartSelectorComponent :name="'Eyes'" :avatar="avatar" :part="'eyes'" @change="updateURL()"/>
-            <AvatarPartSelectorComponent :name="'Clothes'" :avatar="avatar" :part="'clothes'" @change="updateURL()"/>
+          <div class="d-flex flex-row w-100">
+            <div class="w-50 d-flex flex-column" style="gap: 10px">
+              
+              <span>Colors</span>
+              <ColorSelectorComponent :name="'Background'" :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+              <ColorSelectorComponent :name="'Skin'" :selected="avatar.colors.skin" @input="onSkinColorChange"/>
+              <ColorSelectorComponent :name="'Hair'" :selected="avatar.colors.hair" @input="onHairColorChange"/>
+              <ColorSelectorComponent :name="'Clothes'" :selected="avatar.colors.clothes" @input="onClothesColorChange"/>
+              <ColorSelectorComponent :name="'Eyes'" :selected="avatar.colors.eyes" @input="onEyesColorChange"/>
+            </div>
+
+            <div class="w-50 d-flex flex-column" style="gap: 10px">
+              <span>Parts</span>
+              <AvatarPartSelectorComponent :name="'Face Shape'" :avatar="avatar" :part="'face'" @change="updateURL()"/>
+              <AvatarPartSelectorComponent :name="'Hair'" :avatar="avatar" :part="'hair'" @change="updateURL()"/>
+              <AvatarPartSelectorComponent :name="'Eyebrows'" :avatar="avatar" :part="'eyebrows'" @change="updateURL()"/>
+              <AvatarPartSelectorComponent :name="'Nose'" :avatar="avatar" :part="'nose'" @change="updateURL()"/>
+              <AvatarPartSelectorComponent :name="'Eyes'" :avatar="avatar" :part="'eyes'" @change="updateURL()"/>
+              <AvatarPartSelectorComponent :name="'Clothes'" :avatar="avatar" :part="'clothes'" @change="updateURL()"/>
+            </div>
           </div>
+          
 
         </div>
       </div>
     
       <div clas="d-flex flex-column">
-        <div>
-          <span>Name</span>
-          <input type="text" :value="avatar.name" @input="onNameChange">
-        </div>
+        
       
 
         <div class="w-100 d-flex flex-row justify-content-end">
