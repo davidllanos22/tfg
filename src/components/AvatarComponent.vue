@@ -40,6 +40,7 @@ onUnmounted(() => {
 });
 
 function draw(){
+  //updateColors();
   let cvs = document.querySelector(".cvs-" + props.avatar.id);
 
   if(!cvs) return;

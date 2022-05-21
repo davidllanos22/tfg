@@ -1,14 +1,23 @@
 import { Utils } from "./utils";
 
 export abstract class Drawing{
+
+  private static images = {};
+
   static createImage(src: string, onload: any = null){
     let base = (import.meta as any).env.BASE_URL;
+
+    if(this.images[src]){
+      if(onload) onload(this.images[src]);
+      return;
+    }
+
     let image = new Image();
     image.src = base + "assets/" + src;
     image.onload = ()=>{
-      if(onload) onload();
+      this.images[src] = image;
+      if(onload) onload(image);
     }
-    return image;
   }
 
   static clearCanvas(ctx: any, width: number, height: number, color: string){
@@ -59,7 +68,7 @@ export abstract class Drawing{
   static createImageCanvas(url: string, replaceColors: any, callback: any){
     let cvs = document.createElement("canvas");
   
-    let image = Drawing.createImage(url, ()=>{
+    Drawing.createImage(url, (image)=>{
       let ctx = cvs.getContext("2d");
   
       cvs.width = image.width;
