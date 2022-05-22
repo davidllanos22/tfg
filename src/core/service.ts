@@ -14,9 +14,7 @@ export abstract class Service{
 
   static loadAvatar(id: string): Promise<Avatar>{
     return new Promise((resolve: any, reject: any)=>{
-      let avatar = localStorage.getItem("avatar_" + id);
-
-      resolve(avatar);
+      resolve(Avatar.fromBase64(localStorage.getItem("avatar_" + id)));
     });
   }
 
@@ -31,7 +29,6 @@ export abstract class Service{
   }
 
   static deleteAvatar(id: string): Promise<boolean>{
-    console.log(id)
     return new Promise((resolve: any, reject: any)=>{
       localStorage.removeItem("avatar_" + id);
       resolve(true);

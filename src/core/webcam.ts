@@ -63,7 +63,7 @@ export class Webcam{
     if(this.videoElement) this.videoElement.remove();
   }
 
-  getLandmarksFormatted(multiFaceLandmarks: any){
+  private getLandmarksFormatted(multiFaceLandmarks: any){
     let landmarks = multiFaceLandmarks.length > 0 ? multiFaceLandmarks[0] : [];
     if(landmarks.length == 0 ) return {};
   

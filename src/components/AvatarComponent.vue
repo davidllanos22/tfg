@@ -143,7 +143,6 @@ function getLandmark(index){
   return props.landmarks ? props.landmarks[index] : null;
 }
 
-// La rotación en Y es un offset entre el punto de la nariz y los puntos superior e inferior
 function getHeadRotationX(){
   let nose = getLandmark(1);
   let top = getLandmark(10);
@@ -159,7 +158,6 @@ function getHeadRotationX(){
   return Math.max(-1.5, Math.min(1.5, value));
 }
 
-// La rotación en Y es un offset entre el punto de la nariz y los puntos laterales
 function getHeadRotationY(){
   let nose = getLandmark(1);
   let left = getLandmark(454);
@@ -242,8 +240,6 @@ function getMouth(){
 
   let mouthDistance = MathUtils.distance(mouthTop, mouthBottom);
 
-  // TODO: mirar apertura horizontal
-  // TODO: mirar apertura vertical
   if(mouthDistance < 0.1) return 5;
   else if(mouthDistance < 0.15) return 6;
   else return 7;

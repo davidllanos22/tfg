@@ -79,10 +79,8 @@ function onClothesColorChange(event){
 function onEyesColorChange(event){
   let color = event.target.value;
   avatar.value.colors.eyes = color;
-  
   updateURL();
 }
-
 
 function onPlayPressed(event){
   router.push({path: "play", query: {data: avatar.value.toBase64()}});
@@ -109,6 +107,21 @@ function onPreviousPartPressed(part){
   if(avatar.value[part].index < 0) avatar.value[part].index = AvatarPartsCount[part] - 1;
 }
 
+function onDownloadPressed(){
+  let canvas = document.querySelector(".cvs-" + avatar.value.id);
+  let link = document.createElement('a');
+  link.download = 'download.png';
+  link.href = canvas.toDataURL();
+  link.click();
+  link.remove();
+}
+
+function onRandomPressed(){
+  let random = Avatar.random();
+  random.name = "random";
+  avatar.value = random;
+}
+
 </script>
 
 <template>
@@ -124,6 +137,8 @@ function onPreviousPartPressed(part){
           <div class="d-flex flex-row align-items-center" style="gap: 10px;">
             <span>Name</span>
             <input type="text" :value="avatar.name" @input="onNameChange">
+            <button class="pop button bg-warning mb-1" @click="onRandomPressed">Random</button>
+
           </div>
 
           <div class="d-flex flex-row w-100">
@@ -154,11 +169,10 @@ function onPreviousPartPressed(part){
     
       <div clas="d-flex flex-column">
         
-      
-
         <div class="w-100 d-flex flex-row justify-content-end">
           <button class="pop button bg-primary" @click="onPlayPressed">Play</button>
           <button class="pop button bg-warning" @click="onSavePressed">Save</button>
+          <button class="pop button bg-warning" @click="onDownloadPressed">Download</button>
           <button v-if="avatar.updateDate" class="pop button bg-danger" @click="onDeletePressed">Delete</button>
         </div>
         

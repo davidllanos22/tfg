@@ -1,6 +1,6 @@
 import { Utils } from "./utils";
 
-export type AvatarPart = {image: string, index: number};
+export type AvatarPart = {index: number};
 export type AvatarColors = { background?: string, skin?: string, skinDark?: string, clothes?: string, clothesDark?: string, hair?: string, hairDark?: string, eyes?: string};
 
 export const AvatarLandmarks = [0, 1, 6, 17, 55, 52, 70, 61, 291, 285, 282, 276, 160, 158, 144, 153, 385, 387, 380, 373, 10, 152, 454, 234];
@@ -196,14 +196,6 @@ export class Avatar{
     let clothes = Utils.randomRGBColor();
     let clothesDark = clothes.map(c=>Math.max(0, c-20));
 
-    avatar.face = {image: "", index: Utils.randomInt(0, AvatarPartsCount.face - 1)};
-    avatar.hair = {image: "", index: Utils.randomInt(0, AvatarPartsCount.hair - 1)};
-    avatar.eyes = {image: "", index: Utils.randomInt(0, AvatarPartsCount.eyes - 1)};
-    avatar.eyebrows = {image: "", index: Utils.randomInt(0, AvatarPartsCount.eyebrows - 1)};
-    avatar.nose = {image: "", index: Utils.randomInt(0, AvatarPartsCount.nose - 1)};
-    avatar.mouth = {image: "", index: Utils.randomInt(0, AvatarPartsCount.mouth - 1)};
-    avatar.clothes = {image: "", index: Utils.randomInt(0, AvatarPartsCount.clothes - 1)};
-
     avatar.colors.background = Utils.randomHexColor();
     avatar.colors.hair = Utils.RGBtoHex(hair);
     avatar.colors.hairDark = Utils.RGBtoHex(hairDark);
@@ -211,6 +203,14 @@ export class Avatar{
     avatar.colors.skinDark = Utils.RGBtoHex(skinDark);
     avatar.colors.clothes = Utils.RGBtoHex(clothes);
     avatar.colors.clothesDark = Utils.RGBtoHex(clothesDark);
+
+    avatar.face = {index: Utils.randomInt(0, AvatarPartsCount.face - 1)};
+    avatar.hair = {index: Utils.randomInt(0, AvatarPartsCount.hair - 1)};
+    avatar.eyes = {index: Utils.randomInt(0, AvatarPartsCount.eyes - 1)};
+    avatar.eyebrows = {index: Utils.randomInt(0, AvatarPartsCount.eyebrows - 1)};
+    avatar.nose = {index: Utils.randomInt(0, AvatarPartsCount.nose - 1)};
+    avatar.mouth = {index: Utils.randomInt(0, AvatarPartsCount.mouth - 1)};
+    avatar.clothes = {index: Utils.randomInt(0, AvatarPartsCount.clothes - 1)};
 
     return avatar;
   }
