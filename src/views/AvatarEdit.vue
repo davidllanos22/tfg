@@ -15,7 +15,7 @@ let data = router.currentRoute.value.query.data;
 let avatarData = Avatar.fromBase64(data);
 if(avatarData == null) router.push("/list");
 
-console.log(avatarData)
+// console.log(avatarData)
 
 let avatar = ref(avatarData)
 let landmarks = ref([]);
@@ -126,7 +126,7 @@ function onRandomPressed(){
 
 <template>
   <div v-if="avatar" class="d-flex flex-row justify-content-center m-3" >
-    <div class="pop w-100" style="max-width: 900px;">
+    <div class="pop mx-0 w-100" style="max-width: 900px;">
       <div class="d-flex align-items-center flex-md-row flex-column m-3">
         <div class="pop" style="width: fit-content; height: 306px;">
           <AvatarComponent style="width: 300px" :avatar="avatar" :edit="true"/>
@@ -137,7 +137,6 @@ function onRandomPressed(){
           <div class="d-flex flex-row align-items-center" style="gap: 10px;">
             <span>Name</span>
             <input type="text" :value="avatar.name" @input="onNameChange">
-            <button class="pop button bg-warning mb-1" @click="onRandomPressed">Random</button>
 
           </div>
 
@@ -169,8 +168,9 @@ function onRandomPressed(){
     
       <div clas="d-flex flex-column">
         
-        <div class="w-100 d-flex flex-row justify-content-end">
+        <div class="w-100 mx-2 d-flex flex-md-row flex-column justify-content-end">
           <button class="pop button bg-primary" @click="onPlayPressed">Play</button>
+          <button class="pop button bg-warning" @click="onRandomPressed">Random</button>
           <button class="pop button bg-warning" @click="onSavePressed">Save</button>
           <button class="pop button bg-warning" @click="onDownloadPressed">Download</button>
           <button v-if="avatar.updateDate" class="pop button bg-danger" @click="onDeletePressed">Delete</button>

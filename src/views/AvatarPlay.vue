@@ -61,13 +61,13 @@ function onBackgroundColorChange(event){
     <div class="d-flex flex-column align-items-center">
       <h1>{{avatar.name}}</h1>
       <ColorSelectorComponent :name="'Background'" :selected="avatar.colors.background" @input="onBackgroundColorChange"/>
+      <div class="d-flex flex-row mt-3">
+        <button class="pop button bg-primary" @click="onEditPressed">Edit</button>
+        <button class="pop button bg-warning" @click="onDownloadPressed">Download</button>
+      </div>
     </div>
     
-    <div class="position-fixed d-flex flex-row " style="bottom: 0; right: 0;">
-
-      <button class="pop button bg-primary" @click="onEditPressed">Edit</button>
-      <button class="pop button bg-warning" @click="onDownloadPressed">Download</button>
-    </div>
+    
   </div>
   
   <WebCamDebugComponent v-if="settings.debugEnabled" :image="webcamImage" :landmarks="landmarks"/>
